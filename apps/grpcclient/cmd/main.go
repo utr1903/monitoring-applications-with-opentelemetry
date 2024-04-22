@@ -5,14 +5,15 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto/task"
+	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 //go:generate go get google.golang.org/protobuf/cmd/protoc-gen-go
 //go:generate go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
-//go:generate protoc --go_out=./ --go-grpc_out=./ --proto_path=../proto ../proto/task.proto
+//go:generate mkdir -p ../genproto
+//go:generate protoc --go_out=../genproto/ --go_opt=paths=source_relative --go-grpc_out=../genproto --go-grpc_opt=paths=source_relative --proto_path=../../proto ../../proto/task.proto
 
 func main() {
 	// Set up a connection to the server.
@@ -26,7 +27,9 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.StoreTask(ctx, &pb.StoreTaskRequest{Task: "Some task."})
+	r, err := c.StoreTask(ctx, &pb.StoreTaskRequest{
+		Message: "Some task.",
+	})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

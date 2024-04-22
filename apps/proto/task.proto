@@ -3,19 +3,21 @@ syntax = "proto3";
 package task;
 option go_package = "genproto/task";
 
-// The example service definition.
 service TaskService {
-  // Store task
   rpc StoreTask (StoreTaskRequest) returns (StoreTaskResponse) {}
 }
 
-// The request message with the task.
 message StoreTaskRequest {
-string task = 1;
+  string message = 1;
 }
 
-// The response message containing if storing task has succeded.
-message StoreTaskResponse {
-  string result = 1;
+message Task {
+  string id = 1;
   string message = 2;
+}
+
+message StoreTaskResponse {
+  int32 code = 1;
+  string message = 2;
+  Task task = 3;
 }
