@@ -8,7 +8,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
-	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/pkg/data"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/data"
 )
 
 type Database struct {

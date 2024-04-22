@@ -1,6 +1,6 @@
 package server
 
-import "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/pkg/data"
+import "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/data"
 
 type StoreRequest struct {
 	Task string
