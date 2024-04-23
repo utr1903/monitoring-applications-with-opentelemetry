@@ -5,6 +5,7 @@ import (
 	"net"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
+	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/genproto"
 	"google.golang.org/grpc"
@@ -23,14 +24,14 @@ type server struct {
 	pb.UnimplementedTaskServiceServer
 
 	logger       logger.ILogger
-	storeService IStoreService
+	storeService services.IStoreService
 }
 
 func NewServer(logger logger.ILogger) *Server {
 	s := grpc.NewServer()
 	pb.RegisterTaskServiceServer(s, &server{
 		logger:       logger,
-		storeService: NewStoreService(),
+		storeService: services.NewStoreService(),
 	})
 	return &Server{
 		logger:     logger,
@@ -61,7 +62,7 @@ func (s *Server) Run() {
 
 func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*pb.StoreTaskResponse, error) {
 
-	result := s.storeService.Store(&StoreRequest{
+	result := s.storeService.Store(&services.StoreRequest{
 		Task: request.Message,
 	})
 
