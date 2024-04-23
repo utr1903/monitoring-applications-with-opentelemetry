@@ -76,7 +76,7 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 		code = 2
 		message = "Storing task failed."
 
-		s.logger.Log(context.Background(), logger.Error, "Storing task failed.",
+		s.logger.Log(ctx, logger.Error, "Storing task failed.",
 			map[string]string{
 				"error.message": "",
 			},
