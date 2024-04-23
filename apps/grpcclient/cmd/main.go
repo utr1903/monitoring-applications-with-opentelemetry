@@ -2,12 +2,9 @@ package main
 
 import (
 	"context"
-	"log"
-	"time"
 
-	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/client"
 )
 
 //go:generate go get google.golang.org/protobuf/cmd/protoc-gen-go
@@ -16,22 +13,19 @@ import (
 //go:generate protoc --go_out=../genproto/ --go_opt=paths=source_relative --go-grpc_out=../genproto --go-grpc_opt=paths=source_relative --proto_path=../../proto ../../proto/task.proto
 
 func main() {
-	// Set up a connection to the server.
-	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-	c := pb.NewTaskServiceClient(conn)
 
-	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	r, err := c.StoreTask(ctx, &pb.StoreTaskRequest{
-		Message: "Some task.",
-	})
+	ctx := context.Background()
+
+	l := logger.NewLogrusLogger("grpcclient")
+	c := client.NewClient(l)
+	err := c.Connect(ctx)
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return
 	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	defer c.Close()
+
+	err = c.StoreTask(ctx)
+	if err != nil {
+		return
+	}
 }
