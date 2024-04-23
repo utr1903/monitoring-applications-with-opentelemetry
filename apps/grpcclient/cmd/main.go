@@ -28,4 +28,9 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	err = c.ListTasks(ctx)
+	if err != nil {
+		return
+	}
 }

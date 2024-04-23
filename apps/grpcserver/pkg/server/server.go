@@ -25,6 +25,7 @@ type server struct {
 
 	logger       logger.ILogger
 	storeService services.IStoreService
+	listService  services.IListService
 }
 
 func NewServer(logger logger.ILogger) *Server {
@@ -32,6 +33,7 @@ func NewServer(logger logger.ILogger) *Server {
 	pb.RegisterTaskServiceServer(s, &server{
 		logger:       logger,
 		storeService: services.NewStoreService(),
+		listService:  services.NewListService(),
 	})
 	return &Server{
 		logger:     logger,
@@ -76,11 +78,7 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 		code = 2
 		message = "Storing task failed."
 
-		s.logger.Log(ctx, logger.Error, "Storing task failed.",
-			map[string]string{
-				"error.message": "",
-			},
-		)
+		s.logger.Log(ctx, logger.Error, message, map[string]string{})
 	}
 
 	response := &pb.StoreTaskResponse{
@@ -90,6 +88,39 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 			Id:      result.Task.Id.String(),
 			Message: request.Message,
 		},
+	}
+
+	return response, nil
+}
+
+func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+	result := s.listService.List(&services.ListRequest{})
+
+	var code int32
+	var message string
+
+	if result.Result {
+		code = 1
+		message = "Listing tasks succeeded."
+	} else {
+		code = 2
+		message = "Listing tasks failed."
+
+		s.logger.Log(ctx, logger.Error, message, map[string]string{})
+	}
+
+	tasks := []*pb.Task{}
+	for _, task := range result.Tasks {
+		tasks = append(tasks, &pb.Task{
+			Id:      task.Id.String(),
+			Message: task.Message,
+		})
+	}
+
+	response := &pb.ListTasksResponse{
+		Code:    code,
+		Message: message,
+		Tasks:   tasks,
 	}
 
 	return response, nil

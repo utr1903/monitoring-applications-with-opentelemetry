@@ -12,8 +12,14 @@ type CreateResponse struct {
 	Task   *Task
 }
 
+type ListResponse struct {
+	Result bool
+	Tasks  []Task
+}
+
 type IEntityService interface {
 	Create(task string) *CreateResponse
+	List() *ListResponse
 }
 
 type UnimplementedEntityService struct {
@@ -31,5 +37,22 @@ func (s *UnimplementedEntityService) Create(message string) *CreateResponse {
 			Id:      id,
 			Message: message,
 		},
+	}
+}
+
+func (s *UnimplementedEntityService) List() *ListResponse {
+	tasks := make([]Task, 5)
+
+	for i := 1; i <= 5; i++ {
+		id, _ := uuid.NewUUID()
+		tasks = append(tasks, Task{
+			Id:      id,
+			Message: "Some task.",
+		})
+	}
+
+	return &ListResponse{
+		Result: true,
+		Tasks:  tasks,
 	}
 }
