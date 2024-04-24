@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"os"
+	"os/signal"
+	"time"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/client"
@@ -14,28 +17,51 @@ import (
 
 func main() {
 
-	ctx := context.Background()
-
 	l := logger.NewLogrusLogger("grpcclient")
 	c := client.NewClient(l)
+
+	// Connect to grpcserver
+	ctx := context.Background()
 	err := c.Connect(ctx)
 	if err != nil {
 		return
 	}
 	defer c.Close()
 
-	err = c.StoreTask(ctx)
-	if err != nil {
-		return
-	}
+	// Wait for signal to shutdown the simulator
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
 
-	err = c.ListTasks(ctx)
-	if err != nil {
-		return
-	}
+	// Simulate
+	go func() {
+		for {
+			err = c.StoreTask(ctx)
+			if err != nil {
+				continue
+			}
+			time.Sleep(2 * time.Second)
+		}
+	}()
 
-	err = c.DeleteTasks(ctx)
-	if err != nil {
-		return
-	}
+	go func() {
+		for {
+			err = c.ListTasks(ctx)
+			if err != nil {
+				continue
+			}
+			time.Sleep(1 * time.Second)
+		}
+	}()
+
+	go func() {
+		for {
+			err = c.DeleteTasks(ctx)
+			if err != nil {
+				continue
+			}
+			time.Sleep(10 * time.Second)
+		}
+	}()
+
+	<-ctx.Done()
 }

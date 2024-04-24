@@ -29,7 +29,7 @@ func NewClient(logger logger.ILogger) *Client {
 }
 
 func (c *Client) Connect(ctx context.Context) error {
-	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("grpcserver.default.svc.cluster.local:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		c.logger.Log(ctx, logger.Error, "Connecting to gRPC server failed.",
 			map[string]interface{}{
