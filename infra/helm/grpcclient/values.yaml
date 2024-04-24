@@ -1,0 +1,7 @@
+### Variables
+
+# Name
+name: grpcclient
+
+# Replicas
+replicas: 1
