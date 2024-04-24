@@ -34,12 +34,11 @@ func NewLogrusLogger(serviceName string) *Logger {
 	}
 }
 
-func (l *Logger) Log(ctx context.Context, lvl loggers.Level, message string, attrs map[string]string) {
-
+func (l *Logger) Log(ctx context.Context, lvl loggers.Level, message string, attrs map[string]interface{}) {
+	fs := logrus.Fields{}
 	for k, v := range attrs {
-		l.logger.WithField(k, v)
+		fs[k] = v
 	}
-
-	l.logger.WithField("service.name", l.serviceName)
-	l.logger.Log(convertLogLevel(lvl), message)
+	fs["service.name"] = l.serviceName
+	l.logger.WithFields(fs).Log(convertLogLevel(lvl), message)
 }

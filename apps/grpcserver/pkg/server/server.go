@@ -46,16 +46,16 @@ func (s *Server) Run() {
 	lis, err := net.Listen("tcp", "localhost:8080")
 	if err != nil {
 		s.logger.Log(ctx, logger.Error, "Failed to listen.",
-			map[string]string{
+			map[string]interface{}{
 				"error.message": err.Error(),
 			},
 		)
 	}
 
-	s.logger.Log(ctx, logger.Error, "Server listening...", map[string]string{})
+	s.logger.Log(ctx, logger.Error, "Server listening...", map[string]interface{}{})
 	if err := s.grpcServer.Serve(lis); err != nil {
 		s.logger.Log(context.Background(), logger.Error, "Failed to serve.",
-			map[string]string{
+			map[string]interface{}{
 				"error.message": err.Error(),
 			},
 		)
@@ -78,7 +78,7 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 		code = 2
 		message = "Storing task failed."
 
-		s.logger.Log(ctx, logger.Error, message, map[string]string{})
+		s.logger.Log(ctx, logger.Error, message, map[string]interface{}{})
 	}
 
 	response := &pb.StoreTaskResponse{
@@ -106,7 +106,7 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 		code = 2
 		message = "Listing tasks failed."
 
-		s.logger.Log(ctx, logger.Error, message, map[string]string{})
+		s.logger.Log(ctx, logger.Error, message, map[string]interface{}{})
 	}
 
 	tasks := []*pb.Task{}

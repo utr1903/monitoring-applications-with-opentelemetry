@@ -11,5 +11,5 @@ const (
 )
 
 type ILogger interface {
-	Log(ctx context.Context, lvl Level, message string, attrs map[string]string)
+	Log(ctx context.Context, lvl Level, message string, attrs map[string]interface{})
 }

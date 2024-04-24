@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"strconv"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 
@@ -33,7 +32,7 @@ func (c *Client) Connect(ctx context.Context) error {
 	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		c.logger.Log(ctx, logger.Error, "Connecting to gRPC server failed.",
-			map[string]string{
+			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
@@ -54,14 +53,14 @@ func (c *Client) StoreTask(ctx context.Context) error {
 	})
 	if err != nil {
 		c.logger.Log(ctx, logger.Error, "Storing task failed.",
-			map[string]string{
+			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
 	}
 
 	c.logger.Log(ctx, logger.Error, "Storing task suceeded.",
-		map[string]string{
+		map[string]interface{}{
 			"task.id":      res.GetTask().Id,
 			"task.message": res.GetTask().Message,
 		})
@@ -73,15 +72,15 @@ func (c *Client) ListTasks(ctx context.Context) error {
 	res, err := c.client.ListTasks(ctx, &pb.ListTasksRequest{})
 	if err != nil {
 		c.logger.Log(ctx, logger.Error, "Listing task failed.",
-			map[string]string{
+			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
 	}
 
 	c.logger.Log(ctx, logger.Error, "Listing task suceeded.",
-		map[string]string{
-			"task.count": strconv.Itoa(len(res.GetTasks())),
+		map[string]interface{}{
+			"task.count": len(res.GetTasks()),
 		})
 
 	return nil
