@@ -45,7 +45,7 @@ func NewServer(logger logger.ILogger) *Server {
 
 func (s *Server) Run() {
 	ctx := context.Background()
-	lis, err := net.Listen("tcp", "localhost:8080")
+	lis, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		s.logger.Log(ctx, logger.Error, "Failed to listen.",
 			map[string]interface{}{
