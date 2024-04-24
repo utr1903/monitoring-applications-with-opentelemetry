@@ -36,16 +36,16 @@ httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project
 ### Deploy Helm ###
 ###################
 
-# # grpcserver
-# helm upgrade ${grpcserver} \
-#   --install \
-#   --wait \
-#   --debug \
-#   --set imageName=${grpcserverImageName} \
-#   --set imagePullPolicy="Always" \
-#   --set name=${grpcserver} \
-#   --set replicas=1 \
-#   "./${grpcserver}"
+# grpcserver
+helm upgrade ${grpcserver} \
+  --install \
+  --wait \
+  --debug \
+  --set imageName=${grpcserverImageName} \
+  --set imagePullPolicy="Always" \
+  --set name=${grpcserver} \
+  --set replicas=1 \
+  "./${grpcserver}"
 
 # grpcclient
 helm upgrade ${grpcclient} \
