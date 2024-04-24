@@ -6,6 +6,7 @@ option go_package = "genproto/task";
 service TaskService {
   rpc StoreTask (StoreTaskRequest) returns (StoreTaskResponse) {}
   rpc ListTasks (ListTasksRequest) returns (ListTasksResponse) {}
+  rpc DeleteTasks (DeleteTasksRequest) returns (DeleteTasksResponse) {}
 }
 
 message Task {
@@ -20,7 +21,7 @@ message StoreTaskRequest {
 message StoreTaskResponse {
   int32 code = 1;
   string message = 2;
-  Task task = 3;
+  Task body = 3;
 }
 
 message ListTasksRequest {
@@ -30,5 +31,14 @@ message ListTasksRequest {
 message ListTasksResponse {
   int32 code = 1;
   string message = 2;
-  repeated Task tasks = 3;
+  repeated Task body = 3;
+}
+
+message DeleteTasksRequest {
+
+}
+
+message DeleteTasksResponse {
+  int32 code = 1;
+  string message = 2;
 }

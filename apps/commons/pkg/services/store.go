@@ -7,8 +7,9 @@ type StoreRequest struct {
 }
 
 type StoreResult struct {
-	Result bool
-	Task   *data.Task
+	Result  bool
+	Message string
+	Body    *data.Task
 }
 
 type IStoreService interface {
@@ -29,7 +30,8 @@ func (s *StoreService) Store(req *StoreRequest) *StoreResult {
 	res := s.entityService.Create(req.Task)
 
 	return &StoreResult{
-		Result: res.Result,
-		Task:   res.Task,
+		Result:  res.Result,
+		Message: res.Message,
+		Body:    res.Body,
 	}
 }

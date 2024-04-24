@@ -33,4 +33,9 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	err = c.DeleteTasks(ctx)
+	if err != nil {
+		return
+	}
 }

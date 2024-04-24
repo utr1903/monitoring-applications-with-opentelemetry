@@ -6,8 +6,9 @@ type ListRequest struct {
 }
 
 type ListResult struct {
-	Result bool
-	Tasks  []data.Task
+	Result  bool
+	Message string
+	Body    []data.Task
 }
 
 type IListService interface {
@@ -28,7 +29,8 @@ func (s *ListService) List(req *ListRequest) *ListResult {
 	res := s.entityService.List()
 
 	return &ListResult{
-		Result: res.Result,
-		Tasks:  res.Tasks,
+		Result:  res.Result,
+		Message: res.Message,
+		Body:    res.Body,
 	}
 }

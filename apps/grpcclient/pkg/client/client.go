@@ -61,8 +61,8 @@ func (c *Client) StoreTask(ctx context.Context) error {
 
 	c.logger.Log(ctx, logger.Error, "Storing task suceeded.",
 		map[string]interface{}{
-			"task.id":      res.GetTask().Id,
-			"task.message": res.GetTask().Message,
+			"task.id":      res.GetBody().Id,
+			"task.message": res.GetBody().Message,
 		})
 
 	return nil
@@ -80,8 +80,24 @@ func (c *Client) ListTasks(ctx context.Context) error {
 
 	c.logger.Log(ctx, logger.Error, "Listing task suceeded.",
 		map[string]interface{}{
-			"task.count": len(res.GetTasks()),
+			"task.count": len(res.GetBody()),
 		})
+
+	return nil
+}
+
+func (c *Client) DeleteTasks(ctx context.Context) error {
+	_, err := c.client.DeleteTasks(ctx, &pb.DeleteTasksRequest{})
+	if err != nil {
+		c.logger.Log(ctx, logger.Error, "Deleting task failed.",
+			map[string]interface{}{
+				"error.message": err.Error(),
+			})
+		return err
+	}
+
+	c.logger.Log(ctx, logger.Error, "Deleting task suceeded.",
+		map[string]interface{}{})
 
 	return nil
 }

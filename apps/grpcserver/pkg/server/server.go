@@ -23,17 +23,19 @@ type Server struct {
 type server struct {
 	pb.UnimplementedTaskServiceServer
 
-	logger       logger.ILogger
-	storeService services.IStoreService
-	listService  services.IListService
+	logger        logger.ILogger
+	storeService  services.IStoreService
+	listService   services.IListService
+	deleteService services.IDeleteService
 }
 
 func NewServer(logger logger.ILogger) *Server {
 	s := grpc.NewServer()
 	pb.RegisterTaskServiceServer(s, &server{
-		logger:       logger,
-		storeService: services.NewStoreService(),
-		listService:  services.NewListService(),
+		logger:        logger,
+		storeService:  services.NewStoreService(),
+		listService:   services.NewListService(),
+		deleteService: services.NewDeleteService(),
 	})
 	return &Server{
 		logger:     logger,
@@ -84,8 +86,8 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 	response := &pb.StoreTaskResponse{
 		Code:    code,
 		Message: message,
-		Task: &pb.Task{
-			Id:      result.Task.Id.String(),
+		Body: &pb.Task{
+			Id:      result.Body.Id.String(),
 			Message: request.Message,
 		},
 	}
@@ -110,7 +112,7 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 	}
 
 	tasks := []*pb.Task{}
-	for _, task := range result.Tasks {
+	for _, task := range result.Body {
 		tasks = append(tasks, &pb.Task{
 			Id:      task.Id.String(),
 			Message: task.Message,
@@ -120,7 +122,27 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 	response := &pb.ListTasksResponse{
 		Code:    code,
 		Message: message,
-		Tasks:   tasks,
+		Body:    tasks,
+	}
+
+	return response, nil
+}
+
+func (s *server) DeleteTasks(ctx context.Context, request *pb.DeleteTasksRequest) (*pb.DeleteTasksResponse, error) {
+	result := s.deleteService.Delete(&services.DeleteRequest{})
+
+	var code int32
+
+	if result.Result {
+		code = 1
+	} else {
+		code = 2
+		s.logger.Log(ctx, logger.Error, result.Message, map[string]interface{}{})
+	}
+
+	response := &pb.DeleteTasksResponse{
+		Code:    code,
+		Message: result.Message,
 	}
 
 	return response, nil
