@@ -32,8 +32,12 @@ fi
 # Prefix
 project="monitoring-otel"
 
-# Services
+# Monitoring
+tempo="tempo"
+grafana="grafana"
 otelcollector="otelcollector"
+
+# Services
 grpcserver="grpcserver"
 grpcclient="grpcclient"
 httpserver="httpserver"
@@ -48,6 +52,26 @@ httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project
 ###################
 ### Deploy Helm ###
 ###################
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+tempo
+helm upgrade ${tempo} \
+  --install \
+  --wait \
+  --debug \
+  "grafana/tempo"
+
+# grafana
+helm upgrade ${grafana} \
+  --install \
+  --wait \
+  --debug \
+  --set adminUser=admin \
+  --set adminPassword=admin123 \
+  --values ./${grafana}/values.yaml \
+  "grafana/grafana"
 
 # otelcollector
 helm upgrade ${otelcollector} \

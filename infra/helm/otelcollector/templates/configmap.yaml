@@ -27,7 +27,12 @@ data:
         spike_limit_percentage: 25
 
     exporters:
-      logging: {}
+      debug: {}
+
+      otlp/trace:
+        endpoint: {{ .Values.otel.endpoints.traces }}
+        tls:
+          insecure: true
 
     service:
       extensions:
@@ -42,7 +47,7 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - logging
+            - debug
         traces:
           receivers:
             - otlp
@@ -50,7 +55,8 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - logging
+            - debug
+            - otlp/trace
         logs:
           receivers:
             - otlp
@@ -58,7 +64,7 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - logging
+            - debug
 
       telemetry:
         metrics:
