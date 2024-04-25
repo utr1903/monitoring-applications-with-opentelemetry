@@ -17,6 +17,18 @@ while (( "$#" )); do
   esac
 done
 
+# Container registery
+if [[ $containerRegistry == "" ]]; then
+  echo "Container registery [--registry] is not provided! Using default [ghcr.io]..."
+  containerRegistry="ghcr.io"
+fi
+
+# Container registery username
+if [[ $containerRegistryUsername == "" ]]; then
+  echo "Container registery username [--username] is not provided! Using default [utr1903]..."
+  containerRegistryUsername="utr1903"
+fi
+
 # Prefix
 project="monitoring-otel"
 
