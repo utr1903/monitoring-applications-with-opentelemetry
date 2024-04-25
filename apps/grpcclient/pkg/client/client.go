@@ -4,6 +4,7 @@ import (
 	"context"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto"
 	"google.golang.org/grpc"
@@ -29,7 +30,10 @@ func NewClient(logger logger.ILogger) *Client {
 }
 
 func (c *Client) Connect(ctx context.Context) error {
-	conn, err := grpc.Dial("grpcserver.default.svc.cluster.local:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("grpcserver.default.svc.cluster.local:8080",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
+	)
 	if err != nil {
 		c.logger.Log(ctx, logger.Error, "Connecting to gRPC server failed.",
 			map[string]interface{}{

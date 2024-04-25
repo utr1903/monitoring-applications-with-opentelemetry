@@ -23,19 +23,19 @@ done
 
 # Container registery
 if [[ $containerRegistry == "" ]]; then
-  echo "Container registery [--registry] is not provided!"
-  exit 1
+  echo "Container registery [--registry] is not provided! Using default [ghcr.io]..."
+  containerRegistry="ghcr.io"
 fi
 
 # Container registery username
 if [[ $containerRegistryUsername == "" ]]; then
-  echo "Container registery username [--username] is not provided!"
-  exit 1
+  echo "Container registery username [--username] is not provided! Using default [utr1903]..."
+  containerRegistryUsername="utr1903"
 fi
 
 # Container platform
 if [[ $platform == "" ]]; then
-  # Default is amd
+  # Default is amd64
   platform="amd64"
 else
   if [[ $platform != "amd64" && $platform != "arm64" ]]; then

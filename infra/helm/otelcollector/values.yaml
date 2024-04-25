@@ -1,0 +1,7 @@
+### Variables
+
+# Name
+name: otelcollector
+
+# Replicas
+replicas: 1
