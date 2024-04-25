@@ -6,6 +6,7 @@ import (
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/genproto"
 	"google.golang.org/grpc"
@@ -30,7 +31,7 @@ type server struct {
 }
 
 func NewServer(logger logger.ILogger) *Server {
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.StatsHandler(otelgrpc.NewServerHandler()))
 	pb.RegisterTaskServiceServer(s, &server{
 		logger:        logger,
 		storeService:  services.NewStoreService(),
