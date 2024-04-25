@@ -5,3 +5,10 @@ name: otelcollector
 
 # Replicas
 replicas: 1
+
+# OTel
+otel:
+  # Endpoints
+  endpoints:
+    # Traces
+    traces: "http://tempo.default.svc.cluster.local:4317"
