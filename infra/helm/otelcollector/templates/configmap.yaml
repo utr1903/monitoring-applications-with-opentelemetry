@@ -34,6 +34,11 @@ data:
         tls:
           insecure: true
 
+      prometheus:
+        endpoint: "0.0.0.0:8080"
+        send_timestamps: true
+        metric_expiration: 180m
+
     service:
       extensions:
       - health_check
@@ -48,6 +53,7 @@ data:
             - batch
           exporters:
             - debug
+            - prometheus
         traces:
           receivers:
             - otlp

@@ -33,6 +33,7 @@ fi
 project="monitoring-otel"
 
 # Monitoring
+prometheus="prometheus"
 tempo="tempo"
 grafana="grafana"
 otelcollector="otelcollector"
@@ -53,10 +54,23 @@ httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project
 ### Deploy Helm ###
 ###################
 
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 
-tempo
+# prometheus
+helm upgrade ${prometheus} \
+  --install \
+  --wait \
+  --debug \
+  --set alertmanager.enabled=false \
+  --set kube-state-metrics.enabled=false \
+  --set prometheus-node-exporter.enabled=false \
+  --set prometheus-pushgateway.enabled=false \
+  --values ./${prometheus}/values.yaml \
+  "prometheus-community/prometheus"
+
+# tempo
 helm upgrade ${tempo} \
   --install \
   --wait \
