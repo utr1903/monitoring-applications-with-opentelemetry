@@ -5,3 +5,8 @@ name: grpcserver
 
 # Replicas
 replicas: 1
+
+# OTel
+otel:
+  # OTLP endpoint
+  otlpEndpoint: "http://otelcollector.default.svc.cluster.local:4317"

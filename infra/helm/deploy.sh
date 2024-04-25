@@ -33,6 +33,7 @@ fi
 project="monitoring-otel"
 
 # Services
+otelcollector="otelcollector"
 grpcserver="grpcserver"
 grpcclient="grpcclient"
 httpserver="httpserver"
@@ -47,6 +48,15 @@ httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project
 ###################
 ### Deploy Helm ###
 ###################
+
+# otelcollector
+helm upgrade ${otelcollector} \
+  --install \
+  --wait \
+  --debug \
+  --set name=${otelcollector} \
+  --set replicas=1 \
+  "./${otelcollector}"
 
 # grpcserver
 helm upgrade ${grpcserver} \
