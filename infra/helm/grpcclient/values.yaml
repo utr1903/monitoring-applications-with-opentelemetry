@@ -6,6 +6,17 @@ name: grpcclient
 # Replicas
 replicas: 1
 
+# Config
+config:
+  # Port
+  serverAddress: "grpcserver.default.svc.cluster.local:8080"
+  # Store delay
+  storeDelay: 20
+  # List delay
+  listDelay: 20
+  # Delete delay
+  deleteDelay: 20
+
 # OTel
 otel:
   # OTLP endpoint

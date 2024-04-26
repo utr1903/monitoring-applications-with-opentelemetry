@@ -29,3 +29,11 @@ spec:
               value: service.name=$(OTEL_SERVICE_NAME),service.instance.id=$(K8S_POD_NAME)
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ .Values.otel.otlpEndpoint }}
+            - name: SERVER_ADDRESS
+              value: {{ .Values.config.serverAddress }}
+            - name: STORE_DELAY
+              value: "{{ .Values.config.storeDelay }}"
+            - name: LIST_DELAY
+              value: "{{ .Values.config.listDelay }}"
+            - name: DELETE_DELAY
+              value: "{{ .Values.config.deleteDelay }}"

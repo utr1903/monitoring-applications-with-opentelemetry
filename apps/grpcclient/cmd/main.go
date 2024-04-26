@@ -6,8 +6,11 @@ import (
 	"os/signal"
 	"time"
 
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
+
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
-	otel "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/client"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/config"
 )
@@ -25,17 +28,17 @@ func main() {
 	ctx := context.Background()
 
 	// Create tracer provider
-	tp := otel.NewTraceProvider(ctx)
-	defer otel.ShutdownTraceProvider(ctx, tp)
+	tp := opentelemetry.NewTraceProvider(ctx)
+	defer opentelemetry.ShutdownTraceProvider(ctx, tp)
 
 	// Create metric provider
-	mp := otel.NewMetricProvider(ctx)
-	defer otel.ShutdownMetricProvider(ctx, mp)
+	mp := opentelemetry.NewMetricProvider(ctx)
+	defer opentelemetry.ShutdownMetricProvider(ctx, mp)
 
 	// Collect runtime metrics
-	otel.StartCollectingRuntimeMetrics()
+	opentelemetry.StartCollectingRuntimeMetrics()
 
-	clt := client.NewClient(log)
+	clt := client.NewClient(cfg, log)
 
 	// Connect to grpcserver
 	err := clt.Connect(ctx)
@@ -51,33 +54,43 @@ func main() {
 	// Simulate
 	go func() {
 		for {
-			err = clt.StoreTask(ctx)
-			if err != nil {
-				continue
-			}
+			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			clt.StoreTask(ctx)
 			time.Sleep(2 * time.Second)
+			span.End()
 		}
 	}()
 
 	go func() {
 		for {
-			err = clt.ListTasks(ctx)
-			if err != nil {
-				continue
-			}
+			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			clt.ListTasks(ctx)
 			time.Sleep(1 * time.Second)
+			span.End()
 		}
 	}()
 
 	go func() {
 		for {
-			err = clt.DeleteTasks(ctx)
-			if err != nil {
-				continue
-			}
+			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			clt.DeleteTasks(ctx)
 			time.Sleep(10 * time.Second)
+			span.End()
 		}
 	}()
 
 	<-ctx.Done()
+}
+
+func createRootSpan(serviceName string, ctx context.Context) (context.Context, trace.Span) {
+	// Create root span
+	ctx, span := otel.GetTracerProvider().
+		Tracer(serviceName).
+		Start(
+			ctx,
+			"root",
+			trace.WithSpanKind(trace.SpanKindServer),
+		)
+
+	return ctx, span
 }

@@ -2,11 +2,14 @@ package client
 
 import (
 	"context"
+	"time"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/otel/trace"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/config"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -18,19 +21,34 @@ type IClient interface {
 
 type Client struct {
 	logger logger.ILogger
+
+	serviceName   string
+	serverAddress string
+
 	conn   *grpc.ClientConn
 	client pb.TaskServiceClient
+
+	storeDelay  int
+	listDelay   int
+	deleteDelay int
 }
 
-func NewClient(logger logger.ILogger) *Client {
+func NewClient(cfg *config.Config, logger logger.ILogger) *Client {
 	client := &Client{
 		logger: logger,
+
+		serverAddress: cfg.ServerAddress,
+		serviceName:   cfg.ServiceName,
+
+		storeDelay:  cfg.StoreDelay,
+		listDelay:   cfg.ListDelay,
+		deleteDelay: cfg.DeleteDelay,
 	}
 	return client
 }
 
 func (c *Client) Connect(ctx context.Context) error {
-	conn, err := grpc.Dial("grpcserver.default.svc.cluster.local:8080",
+	conn, err := grpc.Dial(c.serverAddress,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 	)
@@ -69,6 +87,8 @@ func (c *Client) StoreTask(ctx context.Context) error {
 			"task.message": res.GetBody().Message,
 		})
 
+	// Add artificial postprocessing step
+	c.postprocess(ctx, c.storeDelay)
 	return nil
 }
 
@@ -87,6 +107,8 @@ func (c *Client) ListTasks(ctx context.Context) error {
 			"task.count": len(res.GetBody()),
 		})
 
+	// Add artificial postprocessing step
+	c.postprocess(ctx, c.listDelay)
 	return nil
 }
 
@@ -103,5 +125,27 @@ func (c *Client) DeleteTasks(ctx context.Context) error {
 	c.logger.Log(ctx, logger.Error, "Deleting task suceeded.",
 		map[string]interface{}{})
 
+	// Add artificial postprocessing step
+	c.postprocess(ctx, c.deleteDelay)
 	return nil
+}
+
+func (c *Client) postprocess(ctx context.Context, duration int) {
+	// Get current span
+	parentSpan := trace.SpanFromContext(ctx)
+
+	c.logger.Log(ctx, logger.Info, "Postprocessing...",
+		map[string]interface{}{})
+
+	// Create postprocessing span
+	_, span := parentSpan.TracerProvider().
+		Tracer(c.serviceName).
+		Start(
+			ctx,
+			"postprocessing",
+			trace.WithSpanKind(trace.SpanKindInternal),
+		)
+	defer span.End()
+
+	time.Sleep(time.Duration(duration) * time.Microsecond)
 }
