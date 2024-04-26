@@ -9,6 +9,7 @@ import (
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
 	otel "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/client"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/pkg/config"
 )
 
 //go:generate go get google.golang.org/protobuf/cmd/protoc-gen-go
@@ -17,7 +18,8 @@ import (
 //go:generate protoc --go_out=../genproto/ --go_opt=paths=source_relative --go-grpc_out=../genproto --go-grpc_opt=paths=source_relative --proto_path=../../proto ../../proto/task.proto
 
 func main() {
-	l := logger.NewLogrusLogger("grpcclient")
+	cfg := config.NewConfig()
+	log := logger.NewLogrusLogger(cfg.ServiceName)
 
 	// Get context
 	ctx := context.Background()
@@ -33,14 +35,14 @@ func main() {
 	// Collect runtime metrics
 	otel.StartCollectingRuntimeMetrics()
 
-	c := client.NewClient(l)
+	clt := client.NewClient(log)
 
 	// Connect to grpcserver
-	err := c.Connect(ctx)
+	err := clt.Connect(ctx)
 	if err != nil {
 		return
 	}
-	defer c.Close()
+	defer clt.Close()
 
 	// Wait for signal to shutdown the simulator
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
@@ -49,7 +51,7 @@ func main() {
 	// Simulate
 	go func() {
 		for {
-			err = c.StoreTask(ctx)
+			err = clt.StoreTask(ctx)
 			if err != nil {
 				continue
 			}
@@ -59,7 +61,7 @@ func main() {
 
 	go func() {
 		for {
-			err = c.ListTasks(ctx)
+			err = clt.ListTasks(ctx)
 			if err != nil {
 				continue
 			}
@@ -69,7 +71,7 @@ func main() {
 
 	go func() {
 		for {
-			err = c.DeleteTasks(ctx)
+			err = clt.DeleteTasks(ctx)
 			if err != nil {
 				continue
 			}

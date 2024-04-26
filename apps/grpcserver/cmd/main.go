@@ -15,8 +15,8 @@ import (
 //go:generate protoc --go_out=../genproto/ --go_opt=paths=source_relative --go-grpc_out=../genproto --go-grpc_opt=paths=source_relative --proto_path=../../proto ../../proto/task.proto
 
 func main() {
-	c := config.NewConfig()
-	l := logger.NewLogrusLogger(c.ServiceName)
+	cfg := config.NewConfig()
+	log := logger.NewLogrusLogger(cfg.ServiceName)
 
 	// Get context
 	ctx := context.Background()
@@ -32,6 +32,6 @@ func main() {
 	// Collect runtime metrics
 	otel.StartCollectingRuntimeMetrics()
 
-	s := server.NewServer(c, l)
-	s.Run()
+	srv := server.NewServer(cfg, log)
+	srv.Run()
 }
