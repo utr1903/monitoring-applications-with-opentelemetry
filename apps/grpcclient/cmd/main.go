@@ -56,8 +56,9 @@ func main() {
 		for {
 			ctx, span := createRootSpan(cfg.ServiceName, ctx)
 			clt.StoreTask(ctx)
-			time.Sleep(2 * time.Second)
 			span.End()
+
+			time.Sleep(2 * time.Second)
 		}
 	}()
 
@@ -65,8 +66,9 @@ func main() {
 		for {
 			ctx, span := createRootSpan(cfg.ServiceName, ctx)
 			clt.ListTasks(ctx)
-			time.Sleep(1 * time.Second)
 			span.End()
+
+			time.Sleep(1 * time.Second)
 		}
 	}()
 
@@ -74,8 +76,9 @@ func main() {
 		for {
 			ctx, span := createRootSpan(cfg.ServiceName, ctx)
 			clt.DeleteTasks(ctx)
-			time.Sleep(10 * time.Second)
 			span.End()
+
+			time.Sleep(10 * time.Second)
 		}
 	}()
 
