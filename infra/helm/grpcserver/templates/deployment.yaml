@@ -29,6 +29,14 @@ spec:
               value: service.name=$(OTEL_SERVICE_NAME),service.instance.id=$(K8S_POD_NAME)
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: {{ .Values.otel.otlpEndpoint }}
+            - name: PORT
+              value: "{{ .Values.config.port }}"
+            - name: STORE_DELAY
+              value: "{{ .Values.config.storeDelay }}"
+            - name: LIST_DELAY
+              value: "{{ .Values.config.listDelay }}"
+            - name: DELETE_DELAY
+              value: "{{ .Values.config.deleteDelay }}"
           ports:
             - protocol: TCP
-              containerPort: 8080
+              containerPort: {{ .Values.config.port }}

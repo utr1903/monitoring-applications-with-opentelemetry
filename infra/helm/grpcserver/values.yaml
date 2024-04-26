@@ -6,6 +6,17 @@ name: grpcserver
 # Replicas
 replicas: 1
 
+# Config
+config:
+  # Port
+  port: 8080
+  # Store delay
+  storeDelay: 200
+  # List delay
+  listDelay: 200
+  # Delete delay
+  deleteDelay: 200
+
 # OTel
 otel:
   # OTLP endpoint

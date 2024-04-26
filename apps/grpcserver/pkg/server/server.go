@@ -3,12 +3,14 @@ package server
 import (
 	"context"
 	"net"
+	"time"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/genproto"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/pkg/config"
 	"google.golang.org/grpc"
 )
 
@@ -17,6 +19,7 @@ type IServer interface {
 }
 
 type Server struct {
+	port       string
 	logger     logger.ILogger
 	grpcServer *grpc.Server
 }
@@ -24,21 +27,34 @@ type Server struct {
 type server struct {
 	pb.UnimplementedTaskServiceServer
 
-	logger        logger.ILogger
-	storeService  services.IStoreService
-	listService   services.IListService
+	logger logger.ILogger
+
+	storeService services.IStoreService
+	storeDelay   int
+
+	listService services.IListService
+	listDelay   int
+
 	deleteService services.IDeleteService
+	deleteDelay   int
 }
 
-func NewServer(logger logger.ILogger) *Server {
+func NewServer(cfg *config.Config, logger logger.ILogger) *Server {
 	s := grpc.NewServer(grpc.StatsHandler(otelgrpc.NewServerHandler()))
 	pb.RegisterTaskServiceServer(s, &server{
-		logger:        logger,
-		storeService:  services.NewStoreService(),
-		listService:   services.NewListService(),
+		logger: logger,
+
+		storeService: services.NewStoreService(),
+		storeDelay:   cfg.StoreDelay,
+
+		listService: services.NewListService(),
+		listDelay:   cfg.ListDelay,
+
 		deleteService: services.NewDeleteService(),
+		deleteDelay:   cfg.DeleteDelay,
 	})
 	return &Server{
+		port:       cfg.Port,
 		logger:     logger,
 		grpcServer: s,
 	}
@@ -46,7 +62,7 @@ func NewServer(logger logger.ILogger) *Server {
 
 func (s *Server) Run() {
 	ctx := context.Background()
-	lis, err := net.Listen("tcp", ":8080")
+	lis, err := net.Listen("tcp", ":"+s.port)
 	if err != nil {
 		s.logger.Log(ctx, logger.Error, "Failed to listen.",
 			map[string]interface{}{
@@ -66,7 +82,10 @@ func (s *Server) Run() {
 }
 
 func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*pb.StoreTaskResponse, error) {
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.storeDelay) * time.Millisecond)
 
+	// Store task
 	result := s.storeService.Store(&services.StoreRequest{
 		Task: request.Message,
 	})
@@ -97,11 +116,14 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 }
 
 func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.listDelay) * time.Millisecond)
+
+	// List tasks
 	result := s.listService.List(&services.ListRequest{})
 
 	var code int32
 	var message string
-
 	if result.Result {
 		code = 1
 		message = "Listing tasks succeeded."
@@ -130,10 +152,14 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 }
 
 func (s *server) DeleteTasks(ctx context.Context, request *pb.DeleteTasksRequest) (*pb.DeleteTasksResponse, error) {
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.deleteDelay) * time.Millisecond)
+
+	// Delete tasks
 	result := s.deleteService.Delete(&services.DeleteRequest{})
 
+	// Prep response
 	var code int32
-
 	if result.Result {
 		code = 1
 	} else {
