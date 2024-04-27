@@ -5,13 +5,18 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.default.svc.cluster.local:80
+      access: proxy
+      isDefault: true
     - name: Tempo
       type: tempo
       access: proxy
       orgId: 1
       url: http://tempo.default.svc.cluster.local:3100
       basicAuth: false
-      isDefault: true
+      isDefault: false
       version: 1
       editable: false
       apiVersion: 1
@@ -20,11 +25,6 @@ datasources:
         httpMethod: GET
         serviceMap:
           datasourceUid: prometheus
-    - name: Prometheus
-      type: prometheus
-      url: http://prometheus-server.default.svc.cluster.local:80
-      access: proxy
-      isDefault: false
 
 # Dashboard providers
 dashboardProviders:
