@@ -37,3 +37,7 @@ spec:
               value: "{{ .Values.config.listDelay }}"
             - name: DELETE_DELAY
               value: "{{ .Values.config.deleteDelay }}"
+            - name: CREATE_POSTPROCESSING_ERROR
+              value: "{{ .Values.config.deleteDelay }}"
+            - name: CREATE_POSTPROCESSING_DELAY
+              value: "{{ .Values.config.deleteDelay }}"

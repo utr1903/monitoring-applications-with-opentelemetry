@@ -12,6 +12,9 @@ type Config struct {
 	StoreDelay  int
 	ListDelay   int
 	DeleteDelay int
+
+	CreatePostprocessingError bool
+	CreatePostprocessingDelay bool
 }
 
 func NewConfig() *Config {
@@ -31,6 +34,16 @@ func NewConfig() *Config {
 		panic("DELETE_DELAY could not be parsed into an integer.")
 	}
 
+	createPostprocessingError, err := strconv.ParseBool(os.Getenv("CREATE_POSTPROCESSING_ERROR"))
+	if err != nil {
+		panic("CREATE_POSTPROCESSING_ERROR could not be parsed into a boolean.")
+	}
+
+	createPostprocessingDelay, err := strconv.ParseBool(os.Getenv("CREATE_POSTPROCESSING_DELAY"))
+	if err != nil {
+		panic("CREATE_POSTPROCESSING_DELAY could not be parsed into a boolean.")
+	}
+
 	return &Config{
 		ServiceName:   serviceName,
 		ServerAddress: serverAddress,
@@ -38,5 +51,8 @@ func NewConfig() *Config {
 		StoreDelay:  storeDelay,
 		ListDelay:   listDelay,
 		DeleteDelay: deleteDelay,
+
+		CreatePostprocessingError: createPostprocessingError,
+		CreatePostprocessingDelay: createPostprocessingDelay,
 	}
 }

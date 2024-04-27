@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
@@ -31,6 +32,9 @@ type Client struct {
 	storeDelay  int
 	listDelay   int
 	deleteDelay int
+
+	createPostprocessingError bool
+	createPostprocessingDelay bool
 }
 
 func NewClient(cfg *config.Config, logger logger.ILogger) *Client {
@@ -43,6 +47,9 @@ func NewClient(cfg *config.Config, logger logger.ILogger) *Client {
 		storeDelay:  cfg.StoreDelay,
 		listDelay:   cfg.ListDelay,
 		deleteDelay: cfg.DeleteDelay,
+
+		createPostprocessingError: cfg.CreatePostprocessingError,
+		createPostprocessingDelay: cfg.CreatePostprocessingDelay,
 	}
 	return client
 }
@@ -146,6 +153,27 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 			trace.WithSpanKind(trace.SpanKindInternal),
 		)
 	defer span.End()
+
+	if c.createPostprocessingError {
+		err := errors.New("could not find postprocessing schema")
+		span.RecordError(err)
+
+		c.logger.Log(ctx, logger.Error, "Postprocessing failed.",
+			map[string]interface{}{
+				"error.message": "Postprocessing step crashed due to singularity in calculation.",
+			})
+
+		return
+	}
+
+	if c.createPostprocessingDelay {
+		c.logger.Log(ctx, logger.Warning, "Postprocessing will take longer.",
+			map[string]interface{}{
+				"error.message": "Postprocessing schema cache could not be found. Calculating from scratch.",
+			})
+		time.Sleep(100 * time.Duration(duration) * time.Microsecond)
+		return
+	}
 
 	time.Sleep(time.Duration(duration) * time.Microsecond)
 }
