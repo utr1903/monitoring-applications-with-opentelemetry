@@ -7,60 +7,59 @@ server:
   statefulSet:
     enabled: true
 
+# Server
+server:
+  # Extra flags
+  extraFlags:
+    - web.enable-remote-write-receiver
+
 # Prometheus config file
 serverFiles:
-  prometheus.yml:
-    rule_files:
-      - /etc/config/recording_rules.yml
-      - /etc/config/alerting_rules.yml
-    ## Below two files are DEPRECATED will be removed from this default values file
-      - /etc/config/rules
-      - /etc/config/alerts
-
-    scrape_configs:
-      # Self scrape
-      - job_name: prometheus
-        static_configs:
-          - targets:
-            - localhost:9090
-      # Scrape otelcollector
-      - job_name: 'otelcollector'
-        scrape_interval: 10s
-        honor_labels: true
-        kubernetes_sd_configs:
-          - role: endpoints
-        relabel_configs:
-          # - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-          #   action: keep
-          #   regex: true
-          # - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape_slow]
-          #   action: drop
-          #   regex: true
-          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
-            action: replace
-            target_label: __scheme__
-            regex: (https?)
-          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
-            action: replace
-            target_label: __metrics_path__
-            regex: (.+)
-          - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-            action: replace
-            target_label: __address__
-            regex: (.+?)(?::\d+)?;(\d+)
-            replacement: $$1:$$2
-          - source_labels: [__meta_kubernetes_service_name]
-            action: keep
-            regex: otelcollector
-          - source_labels: [__meta_kubernetes_namespace]
-            action: keep
-            regex: default
-          - source_labels: [__meta_kubernetes_namespace]
-            action: replace
-            target_label: namespace
-          - source_labels: [__meta_kubernetes_service_name]
-            action: replace
-            target_label: service
-          - source_labels: [__meta_kubernetes_pod_node_name]
-            action: replace
-            target_label: node
+    # Scrape configs
+    scrape_configs: []
+      # # Self scrape
+      # - job_name: prometheus
+      #   static_configs:
+      #     - targets:
+      #       - localhost:9090
+      # # Scrape otelcollector
+      # - job_name: 'otelcollector'
+      #   scrape_interval: 10s
+      #   honor_labels: true
+      #   kubernetes_sd_configs:
+      #     - role: endpoints
+      #   relabel_configs:
+      #     # - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+      #     #   action: keep
+      #     #   regex: true
+      #     # - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape_slow]
+      #     #   action: drop
+      #     #   regex: true
+      #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+      #       action: replace
+      #       target_label: __scheme__
+      #       regex: (https?)
+      #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+      #       action: replace
+      #       target_label: __metrics_path__
+      #       regex: (.+)
+      #     - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+      #       action: replace
+      #       target_label: __address__
+      #       regex: (.+?)(?::\d+)?;(\d+)
+      #       replacement: $$1:$$2
+      #     - source_labels: [__meta_kubernetes_service_name]
+      #       action: keep
+      #       regex: otelcollector
+      #     - source_labels: [__meta_kubernetes_namespace]
+      #       action: keep
+      #       regex: default
+      #     - source_labels: [__meta_kubernetes_namespace]
+      #       action: replace
+      #       target_label: namespace
+      #     - source_labels: [__meta_kubernetes_service_name]
+      #       action: replace
+      #       target_label: service
+      #     - source_labels: [__meta_kubernetes_pod_node_name]
+      #       action: replace
+      #       target_label: node

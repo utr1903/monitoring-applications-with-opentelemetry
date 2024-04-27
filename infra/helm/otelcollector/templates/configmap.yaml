@@ -34,10 +34,8 @@ data:
         tls:
           insecure: true
 
-      prometheus:
-        endpoint: "0.0.0.0:8080"
-        send_timestamps: true
-        metric_expiration: 180m
+      prometheusremotewrite:
+        endpoint: "http://prometheus-server.default.svc.cluster.local:80/api/v1/write"
 
     service:
       extensions:
@@ -53,7 +51,7 @@ data:
             - batch
           exporters:
             - debug
-            - prometheus
+            - prometheusremotewrite
         traces:
           receivers:
             - otlp
