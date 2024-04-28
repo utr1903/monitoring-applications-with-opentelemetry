@@ -7,6 +7,7 @@ import (
 
 	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcclient/genproto"
@@ -156,6 +157,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 
 	if c.createPostprocessingError {
 		err := errors.New("could not find postprocessing schema")
+		span.SetStatus(codes.Error, "Postprocessing failed.")
 		span.RecordError(err)
 
 		c.logger.Log(ctx, logger.Error, "Postprocessing failed.",
