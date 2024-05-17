@@ -35,6 +35,7 @@ project="monitoring-otel"
 # Monitoring
 prometheus="prometheus"
 tempo="tempo"
+loki="loki"
 grafana="grafana"
 otelcollector="otelcollector"
 
@@ -78,6 +79,14 @@ helm upgrade ${tempo} \
   --set tempo.metricsGenerator.enabled=true \
   --set tempo.metricsGenerator.remoteWriteUrl="http://prometheus-server.default.svc.cluster.local:80/api/v1/write" \
   "grafana/tempo"
+
+# loki
+helm upgrade ${loki} \
+  --install \
+  --wait \
+  --debug \
+  --values ./${loki}/values.yaml \
+  "grafana/loki"
 
 # grafana
 helm upgrade ${grafana} \
