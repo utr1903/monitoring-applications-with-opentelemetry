@@ -12,6 +12,8 @@ type Config struct {
 	StoreDelay  int
 	ListDelay   int
 	DeleteDelay int
+
+	CreateDbNotReachableError bool
 }
 
 func NewConfig() *Config {
@@ -31,6 +33,11 @@ func NewConfig() *Config {
 		panic("DELETE_DELAY could not be parsed into an integer.")
 	}
 
+	createDbNotReachableError, err := strconv.ParseBool(os.Getenv("CREATE_DB_NOT_REACHABLE_ERROR"))
+	if err != nil {
+		panic("CREATE_DB_NOT_REACHABLE_ERROR could not be parsed into a boolean.")
+	}
+
 	return &Config{
 		ServiceName: serviceName,
 		Port:        port,
@@ -38,5 +45,7 @@ func NewConfig() *Config {
 		StoreDelay:  storeDelay,
 		ListDelay:   listDelay,
 		DeleteDelay: deleteDelay,
+
+		CreateDbNotReachableError: createDbNotReachableError,
 	}
 }
