@@ -173,7 +173,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 			map[string]interface{}{
 				"error.message": "Postprocessing schema cache could not be found. Calculating from scratch.",
 			})
-		time.Sleep(100 * time.Duration(duration) * time.Microsecond)
+		time.Sleep(time.Second)
 		return
 	}
 
