@@ -45,7 +45,7 @@ func (l *Logger) Log(ctx context.Context, lvl loggers.Level, message string, att
 	span := trace.SpanFromContext(ctx)
 	if span.SpanContext().HasTraceID() && span.SpanContext().HasSpanID() {
 		fs["trace.id"] = span.SpanContext().TraceID()
-		fs["spand.id"] = span.SpanContext().SpanID()
+		fs["span.id"] = span.SpanContext().SpanID()
 	}
 	l.logger.WithFields(fs).Log(convertLogLevel(lvl), message)
 }
