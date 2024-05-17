@@ -25,21 +25,19 @@ datasources:
         httpMethod: GET
         serviceMap:
           datasourceUid: prometheus
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://loki-gateway.default.svc.cluster.local:80
+      jsonData:
+        timeout: 60
+        maxLines: 1000
 
 # Dashboard providers
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
-    - name: 'traces'
-      orgId: 1
-      folder: ''
-      type: file
-      updateIntervalSeconds: 10
-      disableDeletion: true
-      editable: true
-      options:
-        path: /var/lib/grafana/dashboards/traces
     - name: 'metrics'
       orgId: 1
       folder: ''
@@ -49,6 +47,24 @@ dashboardProviders:
       editable: true
       options:
         path: /var/lib/grafana/dashboards/metrics
+    - name: 'traces'
+      orgId: 1
+      folder: ''
+      type: file
+      updateIntervalSeconds: 10
+      disableDeletion: true
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/traces
+    - name: 'logs'
+      orgId: 1
+      folder: ''
+      type: file
+      updateIntervalSeconds: 10
+      disableDeletion: true
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/logs
 
 # Dashboards
 dashboards:
