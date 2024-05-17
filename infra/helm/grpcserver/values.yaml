@@ -16,6 +16,8 @@ config:
   listDelay: 200
   # Delete delay
   deleteDelay: 200
+  # Create DB not reachable error
+  createDbNotReachableError: false
 
 # OTel
 otel:

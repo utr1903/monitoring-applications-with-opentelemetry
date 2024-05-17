@@ -37,6 +37,8 @@ spec:
               value: "{{ .Values.config.listDelay }}"
             - name: DELETE_DELAY
               value: "{{ .Values.config.deleteDelay }}"
+            - name: CREATE_DB_NOT_REACHABLE_ERROR
+              value: "{{ .Values.config.createDbNotReachableError }}"
           ports:
             - protocol: TCP
               containerPort: {{ .Values.config.port }}
