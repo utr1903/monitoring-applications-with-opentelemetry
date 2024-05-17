@@ -10,7 +10,7 @@ import (
 
 func convertLogLevel(lvl loggers.Level) logrus.Level {
 	switch lvl {
-	case loggers.Info:
+	case loggers.Error:
 		return logrus.ErrorLevel
 	case loggers.Warning:
 		return logrus.WarnLevel
