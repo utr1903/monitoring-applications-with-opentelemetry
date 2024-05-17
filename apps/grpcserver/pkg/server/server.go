@@ -3,12 +3,14 @@ package server
 import (
 	"context"
 	"net"
+	"time"
 
-	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 
 	pb "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/genproto"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/grpcserver/pkg/config"
 	"google.golang.org/grpc"
 )
 
@@ -17,28 +19,42 @@ type IServer interface {
 }
 
 type Server struct {
-	logger     logger.ILogger
+	port       string
+	logger     loggers.ILogger
 	grpcServer *grpc.Server
 }
 
 type server struct {
 	pb.UnimplementedTaskServiceServer
 
-	logger        logger.ILogger
-	storeService  services.IStoreService
-	listService   services.IListService
+	logger loggers.ILogger
+
+	storeService services.IStoreService
+	storeDelay   int
+
+	listService services.IListService
+	listDelay   int
+
 	deleteService services.IDeleteService
+	deleteDelay   int
 }
 
-func NewServer(logger logger.ILogger) *Server {
+func NewServer(cfg *config.Config, logger loggers.ILogger) *Server {
 	s := grpc.NewServer(grpc.StatsHandler(otelgrpc.NewServerHandler()))
 	pb.RegisterTaskServiceServer(s, &server{
-		logger:        logger,
-		storeService:  services.NewStoreService(),
-		listService:   services.NewListService(),
-		deleteService: services.NewDeleteService(),
+		logger: logger,
+
+		storeService: services.NewStoreService(logger, cfg.CreateDbNotReachableError),
+		storeDelay:   cfg.StoreDelay,
+
+		listService: services.NewListService(logger, cfg.CreateDbNotReachableError),
+		listDelay:   cfg.ListDelay,
+
+		deleteService: services.NewDeleteService(logger, cfg.CreateDbNotReachableError),
+		deleteDelay:   cfg.DeleteDelay,
 	})
 	return &Server{
+		port:       cfg.Port,
 		logger:     logger,
 		grpcServer: s,
 	}
@@ -46,18 +62,18 @@ func NewServer(logger logger.ILogger) *Server {
 
 func (s *Server) Run() {
 	ctx := context.Background()
-	lis, err := net.Listen("tcp", ":8080")
+	lis, err := net.Listen("tcp", ":"+s.port)
 	if err != nil {
-		s.logger.Log(ctx, logger.Error, "Failed to listen.",
+		s.logger.Log(ctx, loggers.Error, "Failed to listen.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			},
 		)
 	}
 
-	s.logger.Log(ctx, logger.Error, "Server listening...", map[string]interface{}{})
+	s.logger.Log(ctx, loggers.Error, "Server listening...", map[string]interface{}{})
 	if err := s.grpcServer.Serve(lis); err != nil {
-		s.logger.Log(context.Background(), logger.Error, "Failed to serve.",
+		s.logger.Log(context.Background(), loggers.Error, "Failed to serve.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			},
@@ -66,50 +82,33 @@ func (s *Server) Run() {
 }
 
 func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*pb.StoreTaskResponse, error) {
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.storeDelay) * time.Millisecond)
 
-	result := s.storeService.Store(&services.StoreRequest{
+	// Store task
+	result, err := s.storeService.Store(ctx, &services.StoreRequest{
 		Task: request.Message,
 	})
-
-	var code int32
-	var message string
-
-	if result.Result {
-		code = 1
-		message = "Storing task succeeded."
-	} else {
-		code = 2
-		message = "Storing task failed."
-
-		s.logger.Log(ctx, logger.Error, message, map[string]interface{}{})
+	if err != nil {
+		return nil, err
 	}
 
-	response := &pb.StoreTaskResponse{
-		Code:    code,
-		Message: message,
+	return &pb.StoreTaskResponse{
+		Message: result.Message,
 		Body: &pb.Task{
 			Id:      result.Body.Id.String(),
-			Message: request.Message,
-		},
-	}
-
-	return response, nil
+			Message: result.Body.Message,
+		}}, err
 }
 
 func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
-	result := s.listService.List(&services.ListRequest{})
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.listDelay) * time.Millisecond)
 
-	var code int32
-	var message string
-
-	if result.Result {
-		code = 1
-		message = "Listing tasks succeeded."
-	} else {
-		code = 2
-		message = "Listing tasks failed."
-
-		s.logger.Log(ctx, logger.Error, message, map[string]interface{}{})
+	// List tasks
+	result, err := s.listService.List(ctx, &services.ListRequest{})
+	if err != nil {
+		return nil, err
 	}
 
 	tasks := []*pb.Task{}
@@ -120,31 +119,24 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 		})
 	}
 
-	response := &pb.ListTasksResponse{
-		Code:    code,
-		Message: message,
+	return &pb.ListTasksResponse{
+		Message: result.Message,
 		Body:    tasks,
-	}
-
-	return response, nil
+	}, err
 }
 
 func (s *server) DeleteTasks(ctx context.Context, request *pb.DeleteTasksRequest) (*pb.DeleteTasksResponse, error) {
-	result := s.deleteService.Delete(&services.DeleteRequest{})
+	// Initial artifical delay
+	time.Sleep(time.Duration(s.deleteDelay) * time.Millisecond)
 
-	var code int32
+	// Delete tasks
+	result, err := s.deleteService.Delete(ctx, &services.DeleteRequest{})
 
-	if result.Result {
-		code = 1
-	} else {
-		code = 2
-		s.logger.Log(ctx, logger.Error, result.Message, map[string]interface{}{})
+	if err != nil {
+		return nil, err
 	}
 
-	response := &pb.DeleteTasksResponse{
-		Code:    code,
+	return &pb.DeleteTasksResponse{
 		Message: result.Message,
-	}
-
-	return response, nil
+	}, nil
 }

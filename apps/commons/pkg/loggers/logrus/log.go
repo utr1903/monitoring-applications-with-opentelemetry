@@ -5,11 +5,12 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func convertLogLevel(lvl loggers.Level) logrus.Level {
 	switch lvl {
-	case loggers.Info:
+	case loggers.Error:
 		return logrus.ErrorLevel
 	case loggers.Warning:
 		return logrus.WarnLevel
@@ -39,6 +40,12 @@ func (l *Logger) Log(ctx context.Context, lvl loggers.Level, message string, att
 	for k, v := range attrs {
 		fs[k] = v
 	}
+
 	fs["service.name"] = l.serviceName
+	span := trace.SpanFromContext(ctx)
+	if span.SpanContext().HasTraceID() && span.SpanContext().HasSpanID() {
+		fs["trace.id"] = span.SpanContext().TraceID()
+		fs["spand.id"] = span.SpanContext().SpanID()
+	}
 	l.logger.WithFields(fs).Log(convertLogLevel(lvl), message)
 }

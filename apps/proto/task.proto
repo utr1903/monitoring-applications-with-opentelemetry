@@ -19,9 +19,8 @@ message StoreTaskRequest {
 }
 
 message StoreTaskResponse {
-  int32 code = 1;
-  string message = 2;
-  Task body = 3;
+  string message = 1;
+  Task body = 2;
 }
 
 message ListTasksRequest {
@@ -29,9 +28,8 @@ message ListTasksRequest {
 }
 
 message ListTasksResponse {
-  int32 code = 1;
-  string message = 2;
-  repeated Task body = 3;
+  string message = 1;
+  repeated Task body = 2;
 }
 
 message DeleteTasksRequest {
@@ -39,6 +37,5 @@ message DeleteTasksRequest {
 }
 
 message DeleteTasksResponse {
-  int32 code = 1;
-  string message = 2;
+  string message = 1;
 }

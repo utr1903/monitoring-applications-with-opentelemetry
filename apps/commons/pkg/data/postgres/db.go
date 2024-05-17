@@ -2,44 +2,76 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
 
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/uptrace/bun/driver/pgdriver"
+	"github.com/google/uuid"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/data"
 )
 
 type Database struct {
-	instance *bun.DB
+	createDbNotReachableError bool
 }
 
-func NewDatabase() *Database {
-	return &Database{}
+func NewDatabase(createDbNotReachableError bool) *Database {
+	return &Database{
+		createDbNotReachableError: createDbNotReachableError,
+	}
 }
 
-func (d *Database) Connect(username string, password string, address string, port string, database string) {
-
-	// dsn := "postgres://root:root@postgres:5432/test_db?sslmode=disable"
-	dsn := "postgres://" + username + ":" + password + "@" + address + ":" + port + "/" + database + "?sslmode=disable"
-
-	fmt.Println("Connecting...")
-	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
-	db := bun.NewDB(sqldb, pgdialect.New())
-	if db == nil {
-		fmt.Println("Not connected.")
-	} else {
-		fmt.Println("Connected.")
+func (db *Database) Create(ctx context.Context, query string) *data.CreateResponse {
+	if db.createDbNotReachableError {
+		return &data.CreateResponse{
+			Success: false,
+			Message: "Creating task failed. Database is not reachable.",
+			Body:    nil,
+		}
 	}
 
-	d.instance = db
+	id, _ := uuid.NewUUID()
+	return &data.CreateResponse{
+		Success: true,
+		Message: "Creating task succeeded.",
+		Body: &data.Task{
+			Id:      id,
+			Message: query,
+		},
+	}
 }
 
-func (d *Database) CreateTableIfNotExists(ctx context.Context) {
-	_, err := d.instance.NewCreateTable().Model((*data.Task)(nil)).IfNotExists().Exec(ctx)
-	if err != nil {
-		fmt.Println("Failed to create table:", err)
-		return
+func (db *Database) List(ctx context.Context, query string) *data.ListResponse {
+	if db.createDbNotReachableError {
+		return &data.ListResponse{
+			Success: false,
+			Message: "Listing tasks failed. Database is not reachable.",
+			Body:    nil,
+		}
+	}
+
+	tasks := make([]data.Task, 5)
+	for i := 1; i <= 5; i++ {
+		id, _ := uuid.NewUUID()
+		tasks = append(tasks, data.Task{
+			Id:      id,
+			Message: "Some task.",
+		})
+	}
+
+	return &data.ListResponse{
+		Success: true,
+		Message: "Listing tasks succeeded.",
+		Body:    tasks,
+	}
+}
+
+func (db *Database) Delete(ctx context.Context, query string) *data.DeleteResponse {
+	if db.createDbNotReachableError {
+		return &data.DeleteResponse{
+			Success: false,
+			Message: "Deleting tasks failed. Database is not reachable.",
+		}
+	}
+
+	return &data.DeleteResponse{
+		Success: true,
+		Message: "Deleting tasks succeeded.",
 	}
 }
