@@ -21,10 +21,10 @@ data:
 
       filelog:
         include:
-          # - /var/log/pods/*/*/*.log
-          # - /var/log/pods/default_*/grpcclient/*.log
-          # - /var/log/pods/default_*/grpcserver/*.log
           - /var/log/pods/{{ .Release.Namespace }}_*/grpcclient/*.log
+          - /var/log/pods/{{ .Release.Namespace }}_*/grpcserver/*.log
+          - /var/log/pods/{{ .Release.Namespace }}_*/httpclient/*.log
+          - /var/log/pods/{{ .Release.Namespace }}_*/httpserver/*.log
         exclude:
           # Exclude logs from all containers named otel-collector
           - /var/log/pods/*/otel-collector/*.log
