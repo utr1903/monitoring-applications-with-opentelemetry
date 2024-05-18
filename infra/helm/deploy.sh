@@ -69,6 +69,7 @@ helm upgrade ${prometheus} \
   --set prometheus-node-exporter.enabled=false \
   --set prometheus-pushgateway.enabled=false \
   --values ./${prometheus}/values.yaml \
+  --version "25.21.0" \
   "prometheus-community/prometheus"
 
 # tempo
@@ -78,6 +79,7 @@ helm upgrade ${tempo} \
   --debug \
   --set tempo.metricsGenerator.enabled=true \
   --set tempo.metricsGenerator.remoteWriteUrl="http://prometheus-server.default.svc.cluster.local:80/api/v1/write" \
+  --version "1.7.3" \
   "grafana/tempo"
 
 # loki
@@ -86,6 +88,7 @@ helm upgrade ${loki} \
   --wait \
   --debug \
   --values ./${loki}/values.yaml \
+  --version "6.5.2" \
   "grafana/loki"
 
 # grafana
@@ -96,6 +99,7 @@ helm upgrade ${grafana} \
   --set adminUser=admin \
   --set adminPassword=admin123 \
   --values ./${grafana}/values.yaml \
+  --version "7.3.11" \
   "grafana/grafana"
 
 # otelcollector
