@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: {{ .Values.imageName }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Values.name }}
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=$(OTEL_SERVICE_NAME),service.instance.id=$(K8S_POD_NAME)
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otel.otlpEndpoint }}
+            - name: SERVER_ADDRESS
+              value: {{ .Values.config.serverAddress }}
+            - name: STORE_DELAY
+              value: "{{ .Values.config.storeDelay }}"
+            - name: LIST_DELAY
+              value: "{{ .Values.config.listDelay }}"
+            - name: DELETE_DELAY
+              value: "{{ .Values.config.deleteDelay }}"
+            - name: CREATE_POSTPROCESSING_ERROR
+              value: "{{ .Values.config.createPostprocessingError }}"
+            - name: CREATE_POSTPROCESSING_DELAY
+              value: "{{ .Values.config.createPostprocessingDelay }}"

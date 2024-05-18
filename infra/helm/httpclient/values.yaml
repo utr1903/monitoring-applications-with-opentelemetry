@@ -1,0 +1,27 @@
+### Variables
+
+# Name
+name: httpclient
+
+# Replicas
+replicas: 1
+
+# Config
+config:
+  # Port
+  serverAddress: "httpserver.default.svc.cluster.local:8080"
+  # Store delay
+  storeDelay: 20
+  # List delay
+  listDelay: 20
+  # Delete delay
+  deleteDelay: 20
+  # Create postprocessing error
+  createPostprocessingError: false
+  # Create postprocessing delay
+  createPostprocessingDelay: false
+
+# OTel
+otel:
+  # OTLP endpoint
+  otlpEndpoint: "http://otelcollector.default.svc.cluster.local:4317"
