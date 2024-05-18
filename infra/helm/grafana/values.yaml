@@ -1418,7 +1418,7 @@ dashboards:
                 "uid": "P8E80F9AEF21F6940"
               },
               "gridPos": {
-                "h": 22,
+                "h": 14,
                 "w": 24,
                 "x": 0,
                 "y": 0
@@ -1441,8 +1441,8 @@ dashboards:
                     "uid": "P8E80F9AEF21F6940"
                   },
                   "editorMode": "code",
-                  "expr": "{k8s_namespace_name=\"default\",service_name=\"$services\"}",
-                  "maxLines": 100,
+                  "expr": "{k8s_namespace_name=\"default\",service_name=~\"$services\"}",
+                  "maxLines": 20,
                   "queryType": "range",
                   "refId": "A"
                 }
@@ -1451,20 +1451,20 @@ dashboards:
               "type": "logs"
             }
           ],
-          "refresh": "5s",
+          "refresh": "10s",
           "schemaVersion": 39,
           "tags": [],
           "templating": {
             "list": [
               {
-                "allValue": "*",
+                "allValue": ".*",
                 "current": {
                   "selected": true,
                   "text": [
-                    "grpcclient"
+                    "All"
                   ],
                   "value": [
-                    "grpcclient"
+                    "$__all"
                   ]
                 },
                 "datasource": {
@@ -1485,7 +1485,7 @@ dashboards:
                   "stream": "",
                   "type": 1
                 },
-                "refresh": 1,
+                "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 0,
