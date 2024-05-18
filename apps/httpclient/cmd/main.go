@@ -9,7 +9,7 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 
-	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
+	loggers "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers/logrus"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/httpclient/pkg/client"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/httpclient/pkg/config"
@@ -17,7 +17,7 @@ import (
 
 func main() {
 	cfg := config.NewConfig()
-	log := logger.NewLogrusLogger(cfg.ServiceName)
+	log := loggers.NewLogrusLogger(cfg.ServiceName)
 
 	// Get context
 	ctx := context.Background()

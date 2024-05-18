@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	logger "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
+	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -16,13 +16,8 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type IClient interface {
-	StoreTask(ctx context.Context) error
-	ListTasks(ctx context.Context) error
-}
-
 type Client struct {
-	logger logger.ILogger
+	logger loggers.ILogger
 
 	serviceName   string
 	serverAddress string
@@ -38,7 +33,7 @@ type Client struct {
 	createPostprocessingDelay bool
 }
 
-func NewClient(cfg *config.Config, logger logger.ILogger) *Client {
+func NewClient(cfg *config.Config, logger loggers.ILogger) *Client {
 	client := &Client{
 		logger: logger,
 
@@ -61,7 +56,7 @@ func (c *Client) Connect(ctx context.Context) error {
 		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 	)
 	if err != nil {
-		c.logger.Log(ctx, logger.Error, "Connecting to gRPC server failed.",
+		c.logger.Log(ctx, loggers.Error, "Connecting to gRPC server failed.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			})
@@ -82,14 +77,14 @@ func (c *Client) StoreTask(ctx context.Context) error {
 		Message: "Some task.",
 	})
 	if err != nil {
-		c.logger.Log(ctx, logger.Error, "Storing task failed.",
+		c.logger.Log(ctx, loggers.Error, "Storing task failed.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
 	}
 
-	c.logger.Log(ctx, logger.Error, "Storing task suceeded.",
+	c.logger.Log(ctx, loggers.Error, "Storing task suceeded.",
 		map[string]interface{}{
 			"task.id":      res.GetBody().Id,
 			"task.message": res.GetBody().Message,
@@ -103,14 +98,14 @@ func (c *Client) StoreTask(ctx context.Context) error {
 func (c *Client) ListTasks(ctx context.Context) error {
 	res, err := c.client.ListTasks(ctx, &pb.ListTasksRequest{})
 	if err != nil {
-		c.logger.Log(ctx, logger.Error, "Listing task failed.",
+		c.logger.Log(ctx, loggers.Error, "Listing task failed.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
 	}
 
-	c.logger.Log(ctx, logger.Error, "Listing task suceeded.",
+	c.logger.Log(ctx, loggers.Error, "Listing task suceeded.",
 		map[string]interface{}{
 			"task.count": len(res.GetBody()),
 		})
@@ -123,14 +118,14 @@ func (c *Client) ListTasks(ctx context.Context) error {
 func (c *Client) DeleteTasks(ctx context.Context) error {
 	_, err := c.client.DeleteTasks(ctx, &pb.DeleteTasksRequest{})
 	if err != nil {
-		c.logger.Log(ctx, logger.Error, "Deleting task failed.",
+		c.logger.Log(ctx, loggers.Error, "Deleting task failed.",
 			map[string]interface{}{
 				"error.message": err.Error(),
 			})
 		return err
 	}
 
-	c.logger.Log(ctx, logger.Error, "Deleting task suceeded.",
+	c.logger.Log(ctx, loggers.Error, "Deleting task suceeded.",
 		map[string]interface{}{})
 
 	// Add artificial postprocessing step
@@ -142,7 +137,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 	// Get current span
 	parentSpan := trace.SpanFromContext(ctx)
 
-	c.logger.Log(ctx, logger.Info, "Postprocessing...",
+	c.logger.Log(ctx, loggers.Info, "Postprocessing...",
 		map[string]interface{}{})
 
 	// Create postprocessing span
@@ -160,7 +155,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 		span.SetStatus(codes.Error, "Postprocessing failed.")
 		span.RecordError(err)
 
-		c.logger.Log(ctx, logger.Error, "Postprocessing failed.",
+		c.logger.Log(ctx, loggers.Error, "Postprocessing failed.",
 			map[string]interface{}{
 				"error.message": "Postprocessing step crashed due to singularity in calculation.",
 			})
@@ -169,7 +164,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 	}
 
 	if c.createPostprocessingDelay {
-		c.logger.Log(ctx, logger.Warning, "Postprocessing will take longer.",
+		c.logger.Log(ctx, loggers.Warning, "Postprocessing will take longer.",
 			map[string]interface{}{
 				"error.message": "Postprocessing schema cache could not be found. Calculating from scratch.",
 			})

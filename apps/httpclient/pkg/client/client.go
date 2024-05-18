@@ -15,11 +15,6 @@ import (
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/httpclient/pkg/config"
 )
 
-type IClient interface {
-	StoreTask(ctx context.Context) error
-	ListTasks(ctx context.Context) error
-}
-
 type Client struct {
 	logger loggers.ILogger
 
