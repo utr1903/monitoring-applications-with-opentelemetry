@@ -14,10 +14,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-type IServer interface {
-	StoreTask(*pb.StoreTaskRequest) *pb.StoreTaskResponse
-}
-
 type Server struct {
 	port       string
 	logger     loggers.ILogger
