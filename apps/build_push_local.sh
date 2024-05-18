@@ -56,8 +56,8 @@ httpclient="httpclient"
 # Images
 grpcserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${grpcserver}:latest"
 grpcclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${grpcclient}:latest"
-httpclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpserver}:latest"
-httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpclient}:latest"
+httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpserver}:latest"
+httpclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpclient}:latest"
 
 ####################
 ### Build & Push ###
@@ -79,18 +79,18 @@ docker build \
   "./."
 docker push "${grpcclientImageName}"
 
-# # httpserver
-# docker build \
-#   --platform "linux/${platform}" \
-#   --tag "${httpserverImageName}" \
-#   --build-arg="APP_NAME=${httpserver}" \
-#   "./."
-# docker push "${httpserverImageName}"
+# httpserver
+docker build \
+  --platform "linux/${platform}" \
+  --tag "${httpserverImageName}" \
+  --build-arg="APP_NAME=${httpserver}" \
+  "./."
+docker push "${httpserverImageName}"
 
-# # httpclient
-# docker build \
-#   --platform "linux/${platform}" \
-#   --tag "${httpclientImageName}" \
-#   --build-arg="APP_NAME=${httpclient}" \
-#   "./."
-# docker push "${httpclientImageName}"
+# httpclient
+docker build \
+  --platform "linux/${platform}" \
+  --tag "${httpclientImageName}" \
+  --build-arg="APP_NAME=${httpclient}" \
+  "./."
+docker push "${httpclientImageName}"

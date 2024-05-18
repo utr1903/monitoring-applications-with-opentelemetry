@@ -48,8 +48,8 @@ httpclient="httpclient"
 # Images
 grpcserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${grpcserver}:latest"
 grpcclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${grpcclient}:latest"
-httpclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpserver}:latest"
-httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpclient}:latest"
+httpserverImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpserver}:latest"
+httpclientImageName="${containerRegistry}/${containerRegistryUsername}/${project}-${httpclient}:latest"
 
 ###################
 ### Deploy Helm ###
@@ -128,3 +128,25 @@ helm upgrade ${grpcclient} \
   --set name=${grpcclient} \
   --set replicas=1 \
   "./${grpcclient}"
+
+# httpserver
+helm upgrade ${httpserver} \
+  --install \
+  --wait \
+  --debug \
+  --set imageName=${httpserverImageName} \
+  --set imagePullPolicy="Always" \
+  --set name=${httpserver} \
+  --set replicas=1 \
+  "./${httpserver}"
+
+# httpclient
+helm upgrade ${httpclient} \
+  --install \
+  --wait \
+  --debug \
+  --set imageName=${httpclientImageName} \
+  --set imagePullPolicy="Always" \
+  --set name=${httpclient} \
+  --set replicas=1 \
+  "./${httpclient}"

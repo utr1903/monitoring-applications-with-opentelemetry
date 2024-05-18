@@ -1,0 +1,25 @@
+### Variables
+
+# Name
+name: httpserver
+
+# Replicas
+replicas: 1
+
+# Config
+config:
+  # Port
+  port: 8080
+  # Store delay
+  storeDelay: 200
+  # List delay
+  listDelay: 200
+  # Delete delay
+  deleteDelay: 200
+  # Create DB not reachable error
+  createDbNotReachableError: false
+
+# OTel
+otel:
+  # OTLP endpoint
+  otlpEndpoint: "http://otelcollector.default.svc.cluster.local:4317"
