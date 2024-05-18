@@ -99,9 +99,13 @@ data:
           - type: move
             from: attributes.uid
             to: resource["k8s.pod.uid"]
-          # # Parse log message into JSON
-          # - type: json_parser
-          #   parse_from: body.message
+          - type: json_parser
+            parse_from: attributes.log
+          - type: move
+            from: attributes["service.name"]
+            to: resource["service.name"]
+          - type: remove
+            field: attributes.log
 
     processors:
       batch: {}
@@ -112,6 +116,8 @@ data:
 
     exporters:
       debug: {}
+      # debug:
+      #   verbosity: detailed
 
       otlp/trace:
         endpoint: {{ .Values.otel.endpoints.traces }}
@@ -136,7 +142,7 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - debug
+            # - debug
             - prometheusremotewrite
         traces:
           receivers:
@@ -145,7 +151,7 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - debug
+            # - debug
             - otlp/trace
         logs:
           receivers:
@@ -154,7 +160,7 @@ data:
             - memory_limiter
             - batch
           exporters:
-            - debug
+            # - debug
             - otlphttp/logs
 
       telemetry:
