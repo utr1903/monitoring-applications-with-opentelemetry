@@ -50,15 +50,15 @@ func main() {
 		}
 	}()
 
-	// go func() {
-	// 	for {
-	// 		ctx, span := createRootSpan(cfg.ServiceName, ctx)
-	// 		clt.ListTasks(ctx)
-	// 		span.End()
+	go func() {
+		for {
+			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			clt.ListTasks(ctx)
+			span.End()
 
-	// 		time.Sleep(1 * time.Second)
-	// 	}
-	// }()
+			time.Sleep(1 * time.Second)
+		}
+	}()
 
 	// go func() {
 	// 	for {
