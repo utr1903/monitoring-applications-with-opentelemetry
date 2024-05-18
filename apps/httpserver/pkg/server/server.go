@@ -58,7 +58,7 @@ func NewServer(cfg *config.Config, logger loggers.ILogger) *Server {
 
 func (s *Server) Run() {
 	ctx := context.Background()
-	s.logger.Log(ctx, loggers.Error, "Server listening...", map[string]interface{}{})
+	s.logger.Log(ctx, loggers.Info, "Server listening...", map[string]interface{}{})
 	err := s.httpServer.ListenAndServe()
 	if err != nil {
 		s.logger.Log(ctx, loggers.Error, "Failed to serve.",
