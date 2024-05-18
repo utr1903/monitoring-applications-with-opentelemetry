@@ -128,3 +128,14 @@ helm upgrade ${grpcclient} \
   --set name=${grpcclient} \
   --set replicas=1 \
   "./${grpcclient}"
+
+# httpserver
+helm upgrade ${httpserver} \
+  --install \
+  --wait \
+  --debug \
+  --set imageName=${httpserverImageName} \
+  --set imagePullPolicy="Always" \
+  --set name=${httpserver} \
+  --set replicas=1 \
+  "./${httpserver}"
