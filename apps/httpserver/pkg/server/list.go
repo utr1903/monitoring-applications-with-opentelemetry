@@ -73,5 +73,6 @@ func (s *server) writeListResponse(result *services.ListResult, w http.ResponseW
 		Body:    tasks,
 	}
 	resBodyBytes, _ := json.Marshal(resBody)
+	w.WriteHeader(http.StatusOK)
 	w.Write(resBodyBytes)
 }

@@ -62,5 +62,6 @@ func (s *server) writeDeleteResponse(result *services.DeleteResult, w http.Respo
 		Message: result.Message,
 	}
 	resBodyBytes, _ := json.Marshal(resBody)
+	w.WriteHeader(http.StatusOK)
 	w.Write(resBodyBytes)
 }

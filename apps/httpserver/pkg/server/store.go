@@ -68,5 +68,6 @@ func (s *server) writeStoreResponse(result *services.StoreResult, w http.Respons
 		},
 	}
 	resBodyBytes, _ := json.Marshal(resBody)
+	w.WriteHeader(http.StatusCreated)
 	w.Write(resBodyBytes)
 }
