@@ -78,6 +78,8 @@ func (s *Server) Run() {
 }
 
 func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*pb.StoreTaskResponse, error) {
+	s.logger.Log(ctx, loggers.Info, "Handling request...", map[string]interface{}{})
+
 	// Initial artifical delay
 	time.Sleep(time.Duration(s.storeDelay) * time.Millisecond)
 
@@ -89,6 +91,8 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 		return nil, err
 	}
 
+	s.logger.Log(ctx, loggers.Info, "Request is handled.", map[string]interface{}{})
+
 	return &pb.StoreTaskResponse{
 		Message: result.Message,
 		Body: &pb.Task{
@@ -98,6 +102,8 @@ func (s *server) StoreTask(ctx context.Context, request *pb.StoreTaskRequest) (*
 }
 
 func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+	s.logger.Log(ctx, loggers.Info, "Handling request...", map[string]interface{}{})
+
 	// Initial artifical delay
 	time.Sleep(time.Duration(s.listDelay) * time.Millisecond)
 
@@ -115,6 +121,8 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 		})
 	}
 
+	s.logger.Log(ctx, loggers.Info, "Request is handled.", map[string]interface{}{})
+
 	return &pb.ListTasksResponse{
 		Message: result.Message,
 		Body:    tasks,
@@ -122,6 +130,8 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 }
 
 func (s *server) DeleteTasks(ctx context.Context, request *pb.DeleteTasksRequest) (*pb.DeleteTasksResponse, error) {
+	s.logger.Log(ctx, loggers.Info, "Handling request...", map[string]interface{}{})
+
 	// Initial artifical delay
 	time.Sleep(time.Duration(s.deleteDelay) * time.Millisecond)
 
@@ -131,6 +141,8 @@ func (s *server) DeleteTasks(ctx context.Context, request *pb.DeleteTasksRequest
 	if err != nil {
 		return nil, err
 	}
+
+	s.logger.Log(ctx, loggers.Info, "Request is handled.", map[string]interface{}{})
 
 	return &pb.DeleteTasksResponse{
 		Message: result.Message,
