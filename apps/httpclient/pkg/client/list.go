@@ -56,7 +56,7 @@ func (c *Client) ListTasks(ctx context.Context) error {
 		return errors.New("call failed")
 	}
 
-	c.logger.Log(ctx, loggers.Error, "Listing task suceeded.",
+	c.logger.Log(ctx, loggers.Info, resBody.Message,
 		map[string]interface{}{
 			"task.count": len(resBody.Body),
 		})

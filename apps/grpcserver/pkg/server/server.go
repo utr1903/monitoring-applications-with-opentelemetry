@@ -67,7 +67,7 @@ func (s *Server) Run() {
 		)
 	}
 
-	s.logger.Log(ctx, loggers.Error, "Server listening...", map[string]interface{}{})
+	s.logger.Log(ctx, loggers.Info, "Server listening...", map[string]interface{}{})
 	if err := s.grpcServer.Serve(lis); err != nil {
 		s.logger.Log(context.Background(), loggers.Error, "Failed to serve.",
 			map[string]interface{}{

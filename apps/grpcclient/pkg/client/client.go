@@ -84,7 +84,7 @@ func (c *Client) StoreTask(ctx context.Context) error {
 		return err
 	}
 
-	c.logger.Log(ctx, loggers.Error, "Storing task suceeded.",
+	c.logger.Log(ctx, loggers.Info, "Storing task suceeded.",
 		map[string]interface{}{
 			"task.id":      res.GetBody().Id,
 			"task.message": res.GetBody().Message,
@@ -105,7 +105,7 @@ func (c *Client) ListTasks(ctx context.Context) error {
 		return err
 	}
 
-	c.logger.Log(ctx, loggers.Error, "Listing task suceeded.",
+	c.logger.Log(ctx, loggers.Info, "Listing task suceeded.",
 		map[string]interface{}{
 			"task.count": len(res.GetBody()),
 		})
@@ -125,7 +125,7 @@ func (c *Client) DeleteTasks(ctx context.Context) error {
 		return err
 	}
 
-	c.logger.Log(ctx, loggers.Error, "Deleting task suceeded.",
+	c.logger.Log(ctx, loggers.Info, "Deleting task suceeded.",
 		map[string]interface{}{})
 
 	// Add artificial postprocessing step
