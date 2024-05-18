@@ -25,21 +25,19 @@ datasources:
         httpMethod: GET
         serviceMap:
           datasourceUid: prometheus
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://loki-gateway.default.svc.cluster.local:80
+      jsonData:
+        timeout: 60
+        maxLines: 1000
 
 # Dashboard providers
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
     providers:
-    - name: 'traces'
-      orgId: 1
-      folder: ''
-      type: file
-      updateIntervalSeconds: 10
-      disableDeletion: true
-      editable: true
-      options:
-        path: /var/lib/grafana/dashboards/traces
     - name: 'metrics'
       orgId: 1
       folder: ''
@@ -49,6 +47,24 @@ dashboardProviders:
       editable: true
       options:
         path: /var/lib/grafana/dashboards/metrics
+    - name: 'traces'
+      orgId: 1
+      folder: ''
+      type: file
+      updateIntervalSeconds: 10
+      disableDeletion: true
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/traces
+    - name: 'logs'
+      orgId: 1
+      folder: ''
+      type: file
+      updateIntervalSeconds: 10
+      disableDeletion: true
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/logs
 
 # Dashboards
 dashboards:
@@ -1367,6 +1383,87 @@ dashboards:
           "timezone": "browser",
           "title": "Metrics",
           "uid": "adjttrhvgf18gf",
+          "version": 1,
+          "weekStart": ""
+        }
+  logs:
+    dashboard:
+      datasource: Loki
+      json: |
+        {
+          "annotations": {
+            "list": [
+              {
+                "builtIn": 1,
+                "datasource": {
+                  "type": "grafana",
+                  "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+              }
+            ]
+          },
+          "editable": true,
+          "fiscalYearStartMonth": 0,
+          "graphTooltip": 0,
+          "id": 3,
+          "links": [],
+          "panels": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P8E80F9AEF21F6940"
+              },
+              "gridPos": {
+                "h": 22,
+                "w": 24,
+                "x": 0,
+                "y": 0
+              },
+              "id": 1,
+              "options": {
+                "dedupStrategy": "none",
+                "enableLogDetails": true,
+                "prettifyLogMessage": true,
+                "showCommonLabels": false,
+                "showLabels": false,
+                "showTime": false,
+                "sortOrder": "Descending",
+                "wrapLogMessage": false
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "loki",
+                    "uid": "P8E80F9AEF21F6940"
+                  },
+                  "editorMode": "code",
+                  "expr": "{k8s_namespace_name=\"default\",k8s_container_name=\"grpcclient\"} | logfmt | line_format `{{.log}}` | json | label_format service_name=service_name_extracted",
+                  "queryType": "range",
+                  "refId": "A"
+                }
+              ],
+              "title": "Logs",
+              "type": "logs"
+            }
+          ],
+          "schemaVersion": 39,
+          "tags": [],
+          "templating": {
+            "list": []
+          },
+          "time": {
+            "from": "now-2m",
+            "to": "now"
+          },
+          "timepicker": {},
+          "timezone": "browser",
+          "title": "Logs",
+          "uid": "fdm0neivtfxfkf",
           "version": 1,
           "weekStart": ""
         }
