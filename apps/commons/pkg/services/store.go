@@ -60,7 +60,7 @@ func (s *StoreService) Store(ctx context.Context, req *StoreRequest) (*StoreResu
 		"task.message": req.Task,
 	})
 
-	res := s.entityService.Create(ctx, dbStatement)
+	res := s.entityService.Create(ctx, req.Task)
 	if !res.Success {
 		err := errors.New(res.Message)
 
@@ -74,9 +74,6 @@ func (s *StoreService) Store(ctx context.Context, req *StoreRequest) (*StoreResu
 		})
 		return nil, err
 	}
-
-	// Mock as if the DB returns the created task properly.
-	res.Body.Message = req.Task
 
 	return &StoreResult{
 		Message: res.Message,

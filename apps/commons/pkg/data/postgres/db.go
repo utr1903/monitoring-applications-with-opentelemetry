@@ -17,7 +17,7 @@ func NewDatabase(createDbNotReachableError bool) *Database {
 	}
 }
 
-func (db *Database) Create(ctx context.Context, query string) *data.CreateResponse {
+func (db *Database) Create(ctx context.Context, taskMessage string) *data.CreateResponse {
 	if db.createDbNotReachableError {
 		return &data.CreateResponse{
 			Success: false,
@@ -32,7 +32,7 @@ func (db *Database) Create(ctx context.Context, query string) *data.CreateRespon
 		Message: "Creating task succeeded.",
 		Body: &data.Task{
 			Id:      id,
-			Message: "", // Just for mocking DB query execution.
+			Message: taskMessage,
 		},
 	}
 }
