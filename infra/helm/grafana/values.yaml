@@ -240,7 +240,6 @@ dashboards:
           "editable": true,
           "fiscalYearStartMonth": 0,
           "graphTooltip": 0,
-          "id": 2,
           "links": [],
           "panels": [
             {
@@ -671,7 +670,7 @@ dashboards:
                 "x": 12,
                 "y": 11
               },
-              "id": 2,
+              "id": 16,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -709,12 +708,216 @@ dashboards:
               "type": "timeseries"
             },
             {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 19
+              },
+              "id": 2,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "exemplar": false,
+                  "expr": "sum by (k8s_pod_name) (rate(rpc_client_duration_milliseconds_count{job=\"grpcclient\"}[5m])*60)",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "interval": "",
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Throughput per instance (rpm)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 19
+              },
+              "id": 17,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "exemplar": false,
+                  "expr": "sum by (k8s_pod_name) (rate(rpc_server_duration_milliseconds_count{job=\"grpcserver\"}[5m])*60)",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "interval": "",
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Throughput per method (rpm)",
+              "type": "timeseries"
+            },
+            {
               "collapsed": false,
               "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 27
               },
               "id": 11,
               "panels": [],
@@ -785,7 +988,7 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 20
+                "y": 28
               },
               "id": 3,
               "options": {
@@ -886,7 +1089,7 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 20
+                "y": 28
               },
               "id": 5,
               "options": {
@@ -987,7 +1190,7 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 28
+                "y": 36
               },
               "id": 10,
               "options": {
@@ -1088,9 +1291,211 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 28
+                "y": 36
+              },
+              "id": 22,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by (rpc_method) (rpc_client_duration_milliseconds_sum{job=\"grpcclient\"})\n/\nsum by (rpc_method) (rpc_client_duration_milliseconds_count{job=\"grpcclient\"})",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Average latency per method (ms)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 44
               },
               "id": 14,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by (k8s_pod_name) (rpc_client_duration_milliseconds_sum{job=\"grpcclient\"})\n/\nsum by (k8s_pod_name) (rpc_client_duration_milliseconds_count{job=\"grpcclient\"})",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Average latency per instance (ms)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 44
+              },
+              "id": 18,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -1131,7 +1536,7 @@ dashboards:
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 52
               },
               "id": 6,
               "panels": [],
@@ -1202,9 +1607,9 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 37
+                "y": 53
               },
-              "id": 4,
+              "id": 19,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -1225,18 +1630,18 @@ dashboards:
                   },
                   "disableTextWrap": false,
                   "editorMode": "code",
-                  "expr": "sum by (service, span_name) (rate(traces_spanmetrics_latency_count{service=\"grpcclient\", status_code=\"STATUS_CODE_ERROR\"}[5m])*60)",
+                  "expr": "sum(rpc_client_duration_milliseconds_count{job=\"grpcclient\",rpc_grpc_status_code!=\"0\"})\n/\nsum(rpc_client_duration_milliseconds_count{job=\"grpcclient\"})\n*\n100",
                   "format": "time_series",
                   "fullMetaSearch": false,
                   "includeNullMetadata": true,
                   "instant": false,
-                  "legendFormat": "{{label_name}}",
+                  "legendFormat": "Error rate",
                   "range": true,
                   "refId": "A",
                   "useBackend": false
                 }
               ],
-              "title": "Error rate per method (ms)",
+              "title": "RPC error rate (%)",
               "type": "timeseries"
             },
             {
@@ -1303,9 +1708,9 @@ dashboards:
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 37
+                "y": 53
               },
-              "id": 15,
+              "id": 23,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -1326,7 +1731,108 @@ dashboards:
                   },
                   "disableTextWrap": false,
                   "editorMode": "code",
-                  "expr": "sum by (service, span_name) (rate(traces_spanmetrics_latency_count{service=\"grpcserver\", status_code=\"STATUS_CODE_ERROR\"}[5m])*60)",
+                  "expr": "sum(rpc_server_duration_milliseconds_count{job=\"grpcserver\",rpc_grpc_status_code!=\"0\"})\n/\nsum(rpc_server_duration_milliseconds_count{job=\"grpcserver\"})\n*\n100",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "Error rate",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "RPC error rate (%)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 61
+              },
+              "id": 24,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(rpc_method) (rpc_client_duration_milliseconds_count{job=\"grpcclient\",rpc_grpc_status_code!=\"0\"})\n/\nsum by(rpc_method) (rpc_client_duration_milliseconds_count{job=\"grpcclient\"})\n*\n100",
                   "format": "time_series",
                   "fullMetaSearch": false,
                   "includeNullMetadata": true,
@@ -1337,7 +1843,537 @@ dashboards:
                   "useBackend": false
                 }
               ],
-              "title": "Error rate per method (ms)",
+              "title": "RPC error rate per method (%)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 61
+              },
+              "id": 25,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(rpc_method) (rpc_server_duration_milliseconds_count{job=\"grpcserver\",rpc_grpc_status_code!=\"0\"})\n/\nsum by(rpc_method) (rpc_server_duration_milliseconds_count{job=\"grpcserver\"})\n*\n100",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "RPC error rate per method (%)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 69
+              },
+              "id": 26,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(k8s_pod_name) (rpc_client_duration_milliseconds_count{job=\"grpcclient\",rpc_grpc_status_code!=\"0\"})\n/\nsum by(k8s_pod_name) (rpc_client_duration_milliseconds_count{job=\"grpcclient\"})\n*\n100",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Error rate per instance (%)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": [
+                  {
+                    "__systemRef": "hideSeriesFrom",
+                    "matcher": {
+                      "id": "byNames",
+                      "options": {
+                        "mode": "exclude",
+                        "names": [
+                          "grpcserver-77f989b8c-m49ps"
+                        ],
+                        "prefix": "All except:",
+                        "readOnly": true
+                      }
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.hideFrom",
+                        "value": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 69
+              },
+              "id": 27,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(k8s_pod_name) (rpc_server_duration_milliseconds_count{job=\"grpcserver\",rpc_grpc_status_code!=\"0\"})\n/\nsum by(k8s_pod_name) (rpc_server_duration_milliseconds_count{job=\"grpcserver\"})\n*\n100",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Error rate per instance (%)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 77
+              },
+              "id": 4,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(span_name) (rate(traces_spanmetrics_latency_count{service=\"grpcclient\",status_code=\"STATUS_CODE_ERROR\"}[5m])*60)",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Error rate per span (rpm)",
+              "type": "timeseries"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "fieldMinMax": false,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  }
+                },
+                "overrides": []
+              },
+              "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 77
+              },
+              "id": 20,
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "PBFA97CFB590B2093"
+                  },
+                  "disableTextWrap": false,
+                  "editorMode": "code",
+                  "expr": "sum by(span_name) (rate(traces_spanmetrics_latency_count{service=\"grpcserver\", status_code=\"STATUS_CODE_ERROR\"}[5m])*60)",
+                  "format": "time_series",
+                  "fullMetaSearch": false,
+                  "includeNullMetadata": true,
+                  "instant": false,
+                  "legendFormat": "{{label_name}}",
+                  "range": true,
+                  "refId": "A",
+                  "useBackend": false
+                }
+              ],
+              "title": "Error rate per span (rpm)",
               "type": "timeseries"
             }
           ],
@@ -1347,24 +2383,31 @@ dashboards:
           "templating": {
             "list": [
               {
+                "allValue": ".*",
                 "current": {
-                  "selected": false,
-                  "text": "grpcclient",
-                  "value": "grpcclient"
+                  "selected": true,
+                  "text": [
+                    "All"
+                  ],
+                  "value": [
+                    "$__all"
+                  ]
                 },
                 "datasource": {
                   "type": "prometheus",
                   "uid": "PBFA97CFB590B2093"
                 },
-                "definition": "label_values(job)",
+                "definition": "label_values(k8s_node_name)",
+                "description": "Name of the nodes.",
                 "hide": 0,
-                "includeAll": false,
-                "multi": false,
-                "name": "jobs",
+                "includeAll": true,
+                "label": "nodes",
+                "multi": true,
+                "name": "nodes",
                 "options": [],
                 "query": {
                   "qryType": 1,
-                  "query": "label_values(job)",
+                  "query": "label_values(k8s_node_name)",
                   "refId": "PrometheusVariableQueryEditor-VariableQuery"
                 },
                 "refresh": 1,
