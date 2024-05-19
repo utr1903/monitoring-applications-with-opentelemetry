@@ -8,12 +8,14 @@ import (
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/data/postgres"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	otelsql "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry/sql"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 )
 
 const listDbOperation = "SELECT"
 
 type ListRequest struct {
+	Limit int64
 }
 
 type ListResult struct {
@@ -54,7 +56,12 @@ func (s *ListService) List(ctx context.Context, req *ListRequest) (*ListResult, 
 	ctx, dbSpan := s.sqlEnricher.CreateSpan(ctx, listDbOperation, dbStatement)
 	defer dbSpan.End()
 
-	res := s.entityService.List(ctx, dbStatement)
+	dbSpan.SetAttributes(attribute.Int64("task.query.limit", req.Limit))
+	s.logger.Log(ctx, loggers.Info, "Listing tasks...", map[string]interface{}{
+		"task.query.limit": req.Limit,
+	})
+
+	res := s.entityService.List(ctx, req.Limit)
 	if !res.Success {
 		err := errors.New(res.Message)
 

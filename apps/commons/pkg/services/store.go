@@ -8,6 +8,7 @@ import (
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/data/postgres"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	otelsql "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/opentelemetry/sql"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 )
 
@@ -54,7 +55,12 @@ func (s *StoreService) Store(ctx context.Context, req *StoreRequest) (*StoreResu
 	ctx, dbSpan := s.sqlEnricher.CreateSpan(ctx, createDbOperation, dbStatement)
 	defer dbSpan.End()
 
-	res := s.entityService.Create(ctx, dbStatement)
+	dbSpan.SetAttributes(attribute.String("task.message", req.Task))
+	s.logger.Log(ctx, loggers.Info, "Storing task...", map[string]interface{}{
+		"task.message": req.Task,
+	})
+
+	res := s.entityService.Create(ctx, req.Task)
 	if !res.Success {
 		err := errors.New(res.Message)
 
@@ -63,6 +69,7 @@ func (s *StoreService) Store(ctx context.Context, req *StoreRequest) (*StoreResu
 		dbSpan.RecordError(err)
 
 		s.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
+			"task.message":  req.Task,
 			"error.message": res.Message,
 		})
 		return nil, err

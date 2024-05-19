@@ -1,7 +1,6 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -12,14 +11,8 @@ import (
 )
 
 func (c *Client) DeleteTasks(ctx context.Context) error {
-	// Write request body
-	reqBodyBytes, err := c.writeDeleteRequest(ctx)
-	if err != nil {
-		return err
-	}
-
 	// Create HTTP request
-	req, err := c.createDeleteHttpRequest(ctx, reqBodyBytes)
+	req, err := c.createDeleteHttpRequest(ctx)
 	if err != nil {
 		return err
 	}
@@ -64,28 +57,13 @@ func (c *Client) DeleteTasks(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) writeDeleteRequest(ctx context.Context) ([]byte, error) {
-	// Create request body
-	reqBody := &commonhttp.DeleteTasksRequest{}
-	reqBodyBytes, err := json.Marshal(reqBody)
-	if err != nil {
-		msg := "Writing request body failed."
-		c.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
-			"error.message": err.Error(),
-		})
-		return nil, err
-	}
-
-	return reqBodyBytes, nil
-}
-
-func (c *Client) createDeleteHttpRequest(ctx context.Context, reqBodyBytes []byte) (*http.Request, error) {
+func (c *Client) createDeleteHttpRequest(ctx context.Context) (*http.Request, error) {
 	// Create HTTP request
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodDelete,
 		"http://"+c.serverAddress+"/api",
-		bytes.NewBuffer(reqBodyBytes),
+		nil,
 	)
 	if err != nil {
 		msg := "Writing request body failed."

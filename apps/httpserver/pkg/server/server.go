@@ -117,13 +117,15 @@ func (s *server) ListTasks(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(time.Duration(s.listDelay) * time.Millisecond)
 
 	// Read the request body
-	_, err := s.readListRequestBody(ctx, r.Body, w)
+	queryLimit, err := s.readListRequestQueryParam(ctx, r, w)
 	if err != nil {
 		return
 	}
 
 	// List tasks
-	result, err := s.listService.List(ctx, &services.ListRequest{})
+	result, err := s.listService.List(ctx, &services.ListRequest{
+		Limit: *queryLimit,
+	})
 	if err != nil {
 		return
 	}
@@ -137,12 +139,6 @@ func (s *server) DeleteTasks(w http.ResponseWriter, r *http.Request) {
 
 	// Initial artifical delay
 	time.Sleep(time.Duration(s.deleteDelay) * time.Millisecond)
-
-	// Read the request body
-	_, err := s.readDeleteRequestBody(ctx, r.Body, w)
-	if err != nil {
-		return
-	}
 
 	// Delete tasks
 	result, err := s.deleteService.Delete(ctx, &services.DeleteRequest{})

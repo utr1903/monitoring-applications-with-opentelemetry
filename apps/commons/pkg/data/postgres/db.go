@@ -17,7 +17,7 @@ func NewDatabase(createDbNotReachableError bool) *Database {
 	}
 }
 
-func (db *Database) Create(ctx context.Context, query string) *data.CreateResponse {
+func (db *Database) Create(ctx context.Context, taskMessage string) *data.CreateResponse {
 	if db.createDbNotReachableError {
 		return &data.CreateResponse{
 			Success: false,
@@ -32,12 +32,12 @@ func (db *Database) Create(ctx context.Context, query string) *data.CreateRespon
 		Message: "Creating task succeeded.",
 		Body: &data.Task{
 			Id:      id,
-			Message: query,
+			Message: taskMessage,
 		},
 	}
 }
 
-func (db *Database) List(ctx context.Context, query string) *data.ListResponse {
+func (db *Database) List(ctx context.Context, limit int64) *data.ListResponse {
 	if db.createDbNotReachableError {
 		return &data.ListResponse{
 			Success: false,
@@ -46,8 +46,8 @@ func (db *Database) List(ctx context.Context, query string) *data.ListResponse {
 		}
 	}
 
-	tasks := make([]data.Task, 5)
-	for i := 1; i <= 5; i++ {
+	tasks := make([]data.Task, 0, limit)
+	for i := 1; i <= int(limit); i++ {
 		id, _ := uuid.NewUUID()
 		tasks = append(tasks, data.Task{
 			Id:      id,

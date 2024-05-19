@@ -1,25 +1,19 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"net/url"
 
 	commonhttp "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/http"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 )
 
 func (c *Client) ListTasks(ctx context.Context) error {
-	// Write request body
-	reqBodyBytes, err := c.writeListRequest(ctx)
-	if err != nil {
-		return err
-	}
-
 	// Create HTTP request
-	req, err := c.createListHttpRequest(ctx, reqBodyBytes)
+	req, err := c.createListHttpRequest(ctx)
 	if err != nil {
 		return err
 	}
@@ -66,33 +60,22 @@ func (c *Client) ListTasks(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) writeListRequest(ctx context.Context) ([]byte, error) {
-	// Create request body
-	reqBody := &commonhttp.ListTasksRequest{
-		Query: "query",
-	}
-	reqBodyBytes, err := json.Marshal(reqBody)
-	if err != nil {
-		msg := "Writing request body failed."
-		c.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
-			"error.message": err.Error(),
-		})
-		return nil, err
-	}
+func (c *Client) createListHttpRequest(ctx context.Context) (*http.Request, error) {
+	// Add query params
+	u, _ := url.Parse("http://" + c.serverAddress + "/api")
+	queryParams := url.Values{}
+	queryParams.Set("limit", "5")
+	u.RawQuery = queryParams.Encode()
 
-	return reqBodyBytes, nil
-}
-
-func (c *Client) createListHttpRequest(ctx context.Context, reqBodyBytes []byte) (*http.Request, error) {
 	// Create HTTP request
 	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodGet,
-		"http://"+c.serverAddress+"/api",
-		bytes.NewBuffer(reqBodyBytes),
+		u.String(),
+		nil,
 	)
 	if err != nil {
-		msg := "Writing request body failed."
+		msg := "Creating HTTP request failed."
 		c.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
 			"error.message": err.Error(),
 		})
