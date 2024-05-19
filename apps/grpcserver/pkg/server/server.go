@@ -108,7 +108,9 @@ func (s *server) ListTasks(ctx context.Context, request *pb.ListTasksRequest) (*
 	time.Sleep(time.Duration(s.listDelay) * time.Millisecond)
 
 	// List tasks
-	result, err := s.listService.List(ctx, &services.ListRequest{})
+	result, err := s.listService.List(ctx, &services.ListRequest{
+		Limit: int(request.Limit),
+	})
 	if err != nil {
 		return nil, err
 	}

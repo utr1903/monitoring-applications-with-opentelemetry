@@ -96,7 +96,9 @@ func (c *Client) StoreTask(ctx context.Context) error {
 }
 
 func (c *Client) ListTasks(ctx context.Context) error {
-	res, err := c.client.ListTasks(ctx, &pb.ListTasksRequest{})
+	res, err := c.client.ListTasks(ctx, &pb.ListTasksRequest{
+		Limit: 5,
+	})
 	if err != nil {
 		c.logger.Log(ctx, loggers.Error, "Listing task failed.",
 			map[string]interface{}{

@@ -24,7 +24,7 @@ message StoreTaskResponse {
 }
 
 message ListTasksRequest {
-  string query = 1;
+  int32 limit = 1;
 }
 
 message ListTasksResponse {

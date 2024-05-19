@@ -37,7 +37,7 @@ func (db *Database) Create(ctx context.Context, taskMessage string) *data.Create
 	}
 }
 
-func (db *Database) List(ctx context.Context, query string) *data.ListResponse {
+func (db *Database) List(ctx context.Context, limit int) *data.ListResponse {
 	if db.createDbNotReachableError {
 		return &data.ListResponse{
 			Success: false,
@@ -46,8 +46,8 @@ func (db *Database) List(ctx context.Context, query string) *data.ListResponse {
 		}
 	}
 
-	tasks := make([]data.Task, 5)
-	for i := 1; i <= 5; i++ {
+	tasks := make([]data.Task, limit)
+	for i := 1; i <= limit; i++ {
 		id, _ := uuid.NewUUID()
 		tasks = append(tasks, data.Task{
 			Id:      id,
