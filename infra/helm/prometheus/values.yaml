@@ -2,19 +2,23 @@
 
 # Prometheus server
 server:
+  # Number of replica
+  replicaCount: 1
+  # Stateful
 
-  # Run statefulset instead of a deployment
   statefulSet:
+    ## If true, use a statefulset instead of a deployment for pod management.
+    ## This allows to scale replicas to more than 1 pod
     enabled: true
 
-# Server
-server:
   # Extra flags
   extraFlags:
     - web.enable-remote-write-receiver
 
 # Prometheus config file
 serverFiles:
+  # Prometheus YAML
+  prometheus.yml:
     # Scrape configs
     scrape_configs: []
       # # Self scrape
@@ -22,7 +26,7 @@ serverFiles:
       #   static_configs:
       #     - targets:
       #       - localhost:9090
-      # # Scrape otelcollector
+      # Scrape otelcollector
       # - job_name: 'otelcollector'
       #   scrape_interval: 10s
       #   honor_labels: true

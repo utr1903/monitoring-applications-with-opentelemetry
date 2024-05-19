@@ -56,7 +56,7 @@ func (c *Client) DeleteTasks(ctx context.Context) error {
 		return errors.New("call failed")
 	}
 
-	c.logger.Log(ctx, loggers.Error, "Deleting task suceeded.",
+	c.logger.Log(ctx, loggers.Info, resBody.Message,
 		map[string]interface{}{})
 
 	// Add artificial postprocessing step

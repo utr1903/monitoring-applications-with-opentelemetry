@@ -4,6 +4,29 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
 rules:
-  - apiGroups: ['']
-    resources: ['nodes/stats']
-    verbs: ['get', 'watch', 'list']
+  - apiGroups:
+    - ''
+    resources: 
+      - 'nodes/stats'
+      - 'pods'
+      - 'namespaces'
+    verbs: 
+      - 'get'
+      - 'watch'
+      - 'list'
+  - apiGroups:
+      - 'apps'
+    resources:
+      - 'replicasets'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - 'extensions'
+    resources:
+      - 'replicasets'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'

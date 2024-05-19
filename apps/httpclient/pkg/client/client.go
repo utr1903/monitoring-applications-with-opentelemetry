@@ -51,44 +51,6 @@ func NewClient(cfg *config.Config, logger loggers.ILogger) *Client {
 	return client
 }
 
-// func (c *Client) ListTasks(ctx context.Context) error {
-// 	res, err := c.client.ListTasks(ctx, &pb.ListTasksRequest{})
-// 	if err != nil {
-// 		c.logger.Log(ctx, logger.Error, "Listing task failed.",
-// 			map[string]interface{}{
-// 				"error.message": err.Error(),
-// 			})
-// 		return err
-// 	}
-
-// 	c.logger.Log(ctx, logger.Error, "Listing task suceeded.",
-// 		map[string]interface{}{
-// 			"task.count": len(res.GetBody()),
-// 		})
-
-// 	// Add artificial postprocessing step
-// 	c.postprocess(ctx, c.listDelay)
-// 	return nil
-// }
-
-// func (c *Client) DeleteTasks(ctx context.Context) error {
-// 	_, err := c.client.DeleteTasks(ctx, &pb.DeleteTasksRequest{})
-// 	if err != nil {
-// 		c.logger.Log(ctx, logger.Error, "Deleting task failed.",
-// 			map[string]interface{}{
-// 				"error.message": err.Error(),
-// 			})
-// 		return err
-// 	}
-
-// 	c.logger.Log(ctx, logger.Error, "Deleting task suceeded.",
-// 		map[string]interface{}{})
-
-// 	// Add artificial postprocessing step
-// 	c.postprocess(ctx, c.deleteDelay)
-// 	return nil
-// }
-
 func (c *Client) postprocess(ctx context.Context, duration int) {
 	// Get current span
 	parentSpan := trace.SpanFromContext(ctx)

@@ -70,6 +70,8 @@ func (s *Server) Run() {
 }
 
 func (s *server) Handle(w http.ResponseWriter, r *http.Request) {
+	s.logger.Log(r.Context(), loggers.Info, "Handling request...", map[string]interface{}{})
+
 	switch {
 	case r.Method == http.MethodPost:
 		s.StoreTask(w, r)
@@ -80,6 +82,8 @@ func (s *server) Handle(w http.ResponseWriter, r *http.Request) {
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
+
+	s.logger.Log(r.Context(), loggers.Info, "Request is handled.", map[string]interface{}{})
 }
 
 func (s *server) StoreTask(w http.ResponseWriter, r *http.Request) {
