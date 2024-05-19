@@ -32,7 +32,7 @@ func (db *Database) Create(ctx context.Context, query string) *data.CreateRespon
 		Message: "Creating task succeeded.",
 		Body: &data.Task{
 			Id:      id,
-			Message: query,
+			Message: "", // Just for mocking DB query execution.
 		},
 	}
 }
