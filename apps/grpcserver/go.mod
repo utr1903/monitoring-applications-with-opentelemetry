@@ -8,7 +8,7 @@ require (
 	github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons v0.0.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.51.0
 	google.golang.org/grpc v1.63.2
-	google.golang.org/protobuf v1.33.0
+	google.golang.org/protobuf v1.34.1
 )
 
 require (
