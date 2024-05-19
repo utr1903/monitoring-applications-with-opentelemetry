@@ -15,7 +15,7 @@ import (
 const listDbOperation = "SELECT"
 
 type ListRequest struct {
-	Limit int
+	Limit int64
 }
 
 type ListResult struct {
@@ -56,7 +56,7 @@ func (s *ListService) List(ctx context.Context, req *ListRequest) (*ListResult, 
 	ctx, dbSpan := s.sqlEnricher.CreateSpan(ctx, listDbOperation, dbStatement)
 	defer dbSpan.End()
 
-	dbSpan.SetAttributes(attribute.Int("task.query.limit", req.Limit))
+	dbSpan.SetAttributes(attribute.Int64("task.query.limit", req.Limit))
 	s.logger.Log(ctx, loggers.Info, "Listing tasks...", map[string]interface{}{
 		"task.query.limit": req.Limit,
 	})

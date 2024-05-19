@@ -3,44 +3,30 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"io"
 	"net/http"
+	"strconv"
 
 	commonhttp "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/http"
 	"github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/loggers"
 	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
 )
 
-func (s *server) readListRequestBody(ctx context.Context, bodyReader io.ReadCloser, w http.ResponseWriter) (*commonhttp.ListTasksRequest, error) {
-	// Read the request reqBodyBytes
-	reqBodyBytes, err := io.ReadAll(bodyReader)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+func (s *server) readListRequestQueryParam(ctx context.Context, r *http.Request, w http.ResponseWriter) (*int64, error) {
+	// Read the query limit from request param
+	queryParams := r.URL.Query()
+	queryLimitParam := queryParams.Get("limit")
 
-		msg := "Reading request body failed."
-		s.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
-			"error.message": err.Error(),
-		})
-
-		// Create response
-		resBody := &commonhttp.ListTasksResponse{
-			Message: msg,
-			Body:    nil,
-		}
-		resBodyBytes, _ := json.Marshal(resBody)
-		w.Write(resBodyBytes)
-
-		return nil, err
+	if queryLimitParam == "" {
+		queryLimit := int64(5)
+		return &queryLimit, nil
 	}
-	defer bodyReader.Close()
 
-	// Parse the JSON request body
-	var reqBody commonhttp.ListTasksRequest
-	err = json.Unmarshal(reqBodyBytes, &reqBody)
+	// Parse the query limit param
+	queryLimit, err := strconv.ParseInt(queryLimitParam, 10, 64)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 
-		msg := "Parsing request body failed."
+		msg := "Parsing request query param failed."
 		s.logger.Log(ctx, loggers.Error, msg, map[string]interface{}{
 			"error.message": err.Error(),
 		})
@@ -55,7 +41,8 @@ func (s *server) readListRequestBody(ctx context.Context, bodyReader io.ReadClos
 
 		return nil, err
 	}
-	return &reqBody, nil
+
+	return &queryLimit, nil
 }
 
 func (s *server) writeListResponse(result *services.ListResult, w http.ResponseWriter) {

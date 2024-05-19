@@ -30,6 +30,6 @@ type DeleteResponse struct {
 
 type IEntityService interface {
 	Create(ctx context.Context, taskMessage string) *CreateResponse
-	List(ctx context.Context, limit int) *ListResponse
+	List(ctx context.Context, limit int64) *ListResponse
 	Delete(ctx context.Context, query string) *DeleteResponse
 }
