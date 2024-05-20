@@ -78,5 +78,24 @@ bash deploy.sh \
 
 ### Generating intentional issues
 
-There are multiple ways built into the applications with which you can affect the application performance. You can enable them, re-deploy the necessary apps and try to troubleshoot using your preferred observability backend.
-Observability backends
+There are multiple issues built into the applications with which you can affect the application performance which can be found under the Helm `values.yaml` of the applications. You can enable them, re-deploy the necessary apps and try to troubleshoot using your preferred observability backend.
+
+#### Method delayed
+
+All applications have the individual flags `config.storeDelay`, `config.listDelay` and `config.deleteDelay`. If you enable this, the applications will execute the relevant methods longer than usual.
+
+#### Database not reachable
+
+Both `httpserver` and `grpcserver` have the flag `config.createDbNotReachableError`. If you enable this, the applications will get an error during their calls to the database.
+
+#### Postprocessing failed
+
+Both `httpclient` and `grpcclient` have the flag `config.createPostprocessingError`. If you enable this, the applications will generate an error during the postprocessing phase.
+
+#### Postprocessing delayed
+
+Both `httpclient` and `grpcclient` have the flag `config.createPostprocessingDelay`. If you enable this, the applications will execute the postprocessing step a lot longer than usual.
+
+### Observability backends
+
+- [OSS](monitoring/oss/README.md) (Prometheus, Tempo, Loki, Grafana)
