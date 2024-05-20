@@ -1,5 +1,8 @@
 ### Variables
 
+# Replicas
+replicas: 1
+
 # Datasources
 datasources:
   datasources.yaml:
@@ -240,6 +243,7 @@ dashboards:
           "editable": true,
           "fiscalYearStartMonth": 0,
           "graphTooltip": 0,
+          "id": 1,
           "links": [],
           "panels": [
             {
@@ -1362,7 +1366,7 @@ dashboards:
                   "useBackend": false
                 }
               ],
-              "title": "Throughput per method (rpm)",
+              "title": "Throughput per instance (rpm)",
               "type": "timeseries"
             },
             {
@@ -1566,7 +1570,7 @@ dashboards:
                   "useBackend": false
                 }
               ],
-              "title": "Throughput per method (rpm)",
+              "title": "Throughput per instance (rpm)",
               "type": "timeseries"
             },
             {
@@ -2034,8 +2038,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2135,8 +2138,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2236,8 +2238,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2337,8 +2338,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2438,8 +2438,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2539,8 +2538,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2640,8 +2638,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2741,8 +2738,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2855,8 +2851,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -2956,8 +2951,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3057,8 +3051,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3158,8 +3151,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3259,8 +3251,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3360,8 +3351,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3461,8 +3451,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3562,8 +3551,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3663,8 +3651,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3764,8 +3751,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3890,8 +3876,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3991,8 +3976,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4117,8 +4101,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4218,8 +4201,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4319,8 +4301,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4420,8 +4401,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4482,7 +4462,7 @@ dashboards:
               {
                 "allValue": ".*",
                 "current": {
-                  "selected": false,
+                  "selected": true,
                   "text": [
                     "All"
                   ],

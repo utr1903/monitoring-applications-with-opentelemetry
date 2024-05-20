@@ -2,10 +2,10 @@
 
 # Prometheus server
 server:
-  # Number of replica
+  # Replicas
   replicaCount: 1
-  # Stateful
-
+  
+  # Statefulset
   statefulSet:
     ## If true, use a statefulset instead of a deployment for pod management.
     ## This allows to scale replicas to more than 1 pod
@@ -14,6 +14,7 @@ server:
   # Extra flags
   extraFlags:
     - web.enable-remote-write-receiver
+    - web.enable-lifecycle
 
 # Prometheus config file
 serverFiles:

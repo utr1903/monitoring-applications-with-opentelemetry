@@ -10,4 +10,4 @@ otel:
     # Traces
     traces: "http://tempo.default.svc.cluster.local:4317"
     # Metrics
-    metrics: "http://prometheus-server.default.svc.cluster.local:80"
+    metrics: "http://prometheus-server-headless.default.svc.cluster.local:80"
