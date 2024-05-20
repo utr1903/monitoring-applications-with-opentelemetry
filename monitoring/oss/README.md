@@ -10,7 +10,7 @@ The OSS is the default monitoring solution that consists of:
 You need to port-forward the Grafana Kubernetes service to your local machine to login to Grafana:
 
 ```bash
-kubectl port-forward svc/grafana 3000
+kubectl port-forward svc/grafana 3000:80
 ```
 
 You can then use Grafana on your browser on `http://localhost:3000`.

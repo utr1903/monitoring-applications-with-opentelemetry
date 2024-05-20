@@ -143,6 +143,9 @@ data:
           - key: k8s.cluster.name
             value: kind-otel
             action: upsert
+          - key: k8s.node.name
+            value: ${env:MY_NODE_NAME}
+            action: insert
 
       batch: {}
 

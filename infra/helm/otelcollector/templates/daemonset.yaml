@@ -10,8 +10,6 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.name }}
-  strategy:
-    type: RollingUpdate
   template:
     metadata:  
       labels:
@@ -36,6 +34,10 @@ spec:
               containerPort: 4318
               protocol: TCP
           env:
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             - name: MY_POD_IP
               valueFrom:
                 fieldRef:
