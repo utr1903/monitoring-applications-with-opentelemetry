@@ -12,6 +12,8 @@ This repo is dedicated to show how to instrument applications with OpenTelemetry
 ## Prerequisites
 
 - Docker runtime
+- kubectl
+- kind
 - Helm 3
 - Go SDK 1.21 (optional)
 
