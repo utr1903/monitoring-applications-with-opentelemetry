@@ -4561,6 +4561,54 @@ dashboards:
                 "skipUrlSync": false,
                 "sort": 0,
                 "type": "query"
+              },
+              {
+                "allValue": ".+",
+                "current": {
+                  "selected": true,
+                  "text": [
+                    "All"
+                  ],
+                  "value": [
+                    "$__all"
+                  ]
+                },
+                "datasource": {
+                  "type": "tempo",
+                  "uid": "tempo"
+                },
+                "definition": "",
+                "description": "OTel status code of the span.",
+                "hide": 0,
+                "includeAll": true,
+                "label": "span_status",
+                "multi": true,
+                "name": "span_status",
+                "options": [],
+                "query": {
+                  "label": "status",
+                  "refId": "TempoDatasourceVariableQueryEditor-VariableQuery",
+                  "type": 1
+                },
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+              },
+              {
+                "current": {},
+                "description": "Duration of the span in milliseconds.",
+                "hide": 0,
+                "includeAll": false,
+                "label": "span_duration",
+                "multi": false,
+                "name": "span_duration",
+                "options": [],
+                "query": "",
+                "queryValue": "",
+                "skipUrlSync": false,
+                "type": "custom"
               }
             ]
           },
