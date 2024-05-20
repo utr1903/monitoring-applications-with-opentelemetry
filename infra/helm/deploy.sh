@@ -77,8 +77,7 @@ helm upgrade ${tempo} \
   --install \
   --wait \
   --debug \
-  --set tempo.metricsGenerator.enabled=true \
-  --set tempo.metricsGenerator.remoteWriteUrl="http://prometheus-server.default.svc.cluster.local:80/api/v1/write" \
+  --values ./${tempo}/values.yaml \
   --version "1.7.3" \
   "grafana/tempo"
 
