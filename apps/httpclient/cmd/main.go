@@ -42,7 +42,7 @@ func main() {
 	// Simulate
 	go func() {
 		for {
-			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			ctx, span := createRootSpan(cfg.ServiceName, ctx, "store")
 			clt.StoreTask(ctx)
 			span.End()
 
@@ -52,7 +52,7 @@ func main() {
 
 	go func() {
 		for {
-			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			ctx, span := createRootSpan(cfg.ServiceName, ctx, "list")
 			clt.ListTasks(ctx)
 			span.End()
 
@@ -62,7 +62,7 @@ func main() {
 
 	go func() {
 		for {
-			ctx, span := createRootSpan(cfg.ServiceName, ctx)
+			ctx, span := createRootSpan(cfg.ServiceName, ctx, "delete")
 			clt.DeleteTasks(ctx)
 			span.End()
 
@@ -73,13 +73,13 @@ func main() {
 	<-ctx.Done()
 }
 
-func createRootSpan(serviceName string, ctx context.Context) (context.Context, trace.Span) {
+func createRootSpan(serviceName string, ctx context.Context, spanName string) (context.Context, trace.Span) {
 	// Create root span
 	ctx, span := otel.GetTracerProvider().
 		Tracer(serviceName).
 		Start(
 			ctx,
-			"root",
+			spanName,
 			trace.WithSpanKind(trace.SpanKindServer),
 		)
 

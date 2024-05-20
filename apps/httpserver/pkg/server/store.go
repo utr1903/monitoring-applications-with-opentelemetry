@@ -58,16 +58,21 @@ func (s *server) readStoreRequestBody(ctx context.Context, bodyReader io.ReadClo
 	return &reqBody, nil
 }
 
-func (s *server) writeStoreResponse(result *services.StoreResult, w http.ResponseWriter) {
+func (s *server) writeStoreResponse(result *services.StoreResult, w http.ResponseWriter, hasFailed bool) {
 	// Create response
-	resBody := &commonhttp.StoreTaskResponse{
-		Message: result.Message,
-		Body: &commonhttp.Task{
+	var resBody commonhttp.StoreTaskResponse
+	if hasFailed {
+		w.WriteHeader(http.StatusInternalServerError)
+		resBody.Message = "Storing task failed."
+	} else {
+		w.WriteHeader(http.StatusCreated)
+		resBody.Message = result.Message
+		resBody.Body = &commonhttp.Task{
 			Id:      result.Body.Id.String(),
 			Message: result.Body.Message,
-		},
+		}
 	}
+
 	resBodyBytes, _ := json.Marshal(resBody)
-	w.WriteHeader(http.StatusCreated)
 	w.Write(resBodyBytes)
 }

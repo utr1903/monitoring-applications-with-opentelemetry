@@ -138,6 +138,12 @@ data:
           - sources:
             - from: connection
 
+      resource:
+        attributes:
+          - key: k8s.cluster.name
+            value: kind-otel
+            action: upsert
+
       batch: {}
 
     exporters:
@@ -158,6 +164,13 @@ data:
       otlphttp/logs:
         endpoint: http://loki-gateway.default.svc.cluster.local:80/otlp
 
+      # otlp/newrelic:
+      #   endpoint: https://otlp.nr-data.net:4317 # For EU datacenter -> https://otlp.eu01.nr-data.net:4317
+      #   tls:
+      #     insecure: false
+      #   headers:
+      #     api-key: <PASTE_YOUR_NEWRELIC_LICENSE_KEY>
+
     service:
       extensions:
         - health_check
@@ -169,10 +182,12 @@ data:
           processors:
             - memory_limiter
             - k8sattributes
+            - resource
             - batch
           exporters:
             # - debug
             - prometheusremotewrite
+            # - otlp/newrelic
 
         traces:
           receivers:
@@ -180,20 +195,24 @@ data:
           processors:
             - memory_limiter
             - k8sattributes
+            - resource
             - batch
           exporters:
             # - debug
             - otlp/trace
+            # - otlp/newrelic
 
         logs:
           receivers:
             - filelog
           processors:
             - memory_limiter
+            - resource
             - batch
           exporters:
             # - debug
             - otlphttp/logs
+            # - otlp/newrelic
 
       telemetry:
         metrics:
