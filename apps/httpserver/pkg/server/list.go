@@ -45,21 +45,25 @@ func (s *server) readListRequestQueryParam(ctx context.Context, r *http.Request,
 	return &queryLimit, nil
 }
 
-func (s *server) writeListResponse(result *services.ListResult, w http.ResponseWriter) {
+func (s *server) writeListResponse(result *services.ListResult, w http.ResponseWriter, hasFailed bool) {
 	// Create response
-	tasks := []commonhttp.Task{}
-	for _, task := range result.Body {
-		tasks = append(tasks, commonhttp.Task{
-			Id:      task.Id.String(),
-			Message: task.Message,
-		})
+	var resBody commonhttp.ListTasksResponse
+	if hasFailed {
+		w.WriteHeader(http.StatusInternalServerError)
+		resBody.Message = "Listing tasks failed."
+	} else {
+		w.WriteHeader(http.StatusOK)
+		tasks := []commonhttp.Task{}
+		for _, task := range result.Body {
+			tasks = append(tasks, commonhttp.Task{
+				Id:      task.Id.String(),
+				Message: task.Message,
+			})
+		}
+		resBody.Message = result.Message
+		resBody.Body = tasks
 	}
 
-	resBody := &commonhttp.ListTasksResponse{
-		Message: result.Message,
-		Body:    tasks,
-	}
 	resBodyBytes, _ := json.Marshal(resBody)
-	w.WriteHeader(http.StatusOK)
 	w.Write(resBodyBytes)
 }

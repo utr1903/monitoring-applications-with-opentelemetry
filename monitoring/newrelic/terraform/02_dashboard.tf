@@ -415,7 +415,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' TIMESERIES"
       }
     }
 
@@ -429,7 +429,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' TIMESERIES"
       }
     }
 
@@ -443,7 +443,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' TIMESERIES"
       }
     }
 
@@ -457,7 +457,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' TIMESERIES"
       }
     }
 
@@ -471,7 +471,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' FACET rpc.method TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' FACET rpc.method TIMESERIES"
       }
     }
 
@@ -485,7 +485,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' FACET rpc.method TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' FACET rpc.method TIMESERIES"
       }
     }
 
@@ -499,7 +499,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' FACET http.method TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' FACET http.method TIMESERIES"
       }
     }
 
@@ -513,7 +513,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' FACET http.method TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' FACET http.method TIMESERIES"
       }
     }
 
@@ -527,7 +527,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' FACET k8s.pod.name TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcclient' FACET k8s.pod.name TIMESERIES"
       }
     }
 
@@ -541,7 +541,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) > 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' FACET k8s.pod.name TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(rpc.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(rpc.grpc.status_code) != 0)/count(rpc.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' FACET k8s.pod.name TIMESERIES"
       }
     }
 
@@ -555,7 +555,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' FACET k8s.pod.name TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.client.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.client.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpclient' FACET k8s.pod.name TIMESERIES"
       }
     }
 
@@ -569,7 +569,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 300)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' FACET k8s.pod.name TIMESERIES"
+        query      = "FROM Metric SELECT filter(count(http.server.duration), WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND numeric(http.status_code) >= 399)/count(http.server.duration)*100 AS `Error rate` WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' FACET k8s.pod.name TIMESERIES"
       }
     }
 
@@ -625,7 +625,7 @@ resource "newrelic_one_dashboard" "monitoring" {
 
       nrql_query {
         account_id = var.NEW_RELIC_ACCOUNT_ID
-        query      = "FROM Span SELECT count(*) WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'grpcserver' AND otel.status_code = 'ERROR' FACET name TIMESERIES"
+        query      = "FROM Span SELECT count(*) WHERE instrumentation.provider = 'opentelemetry' AND k8s.cluster.name = 'kind-otel' AND service.name = 'httpserver' AND otel.status_code = 'ERROR' FACET name TIMESERIES"
       }
     }
   }

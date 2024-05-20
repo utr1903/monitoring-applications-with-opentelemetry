@@ -8,12 +8,17 @@ import (
 	services "github.com/utr1903/monitoring-applications-with-opentelemetry/apps/commons/pkg/services"
 )
 
-func (s *server) writeDeleteResponse(result *services.DeleteResult, w http.ResponseWriter) {
+func (s *server) writeDeleteResponse(result *services.DeleteResult, w http.ResponseWriter, hasFailed bool) {
 	// Create response
-	resBody := &commonhttp.DeleteTasksResponse{
-		Message: result.Message,
+	var resBody commonhttp.DeleteTasksResponse
+	if hasFailed {
+		w.WriteHeader(http.StatusInternalServerError)
+		resBody.Message = "Deleting tasks failed."
+	} else {
+		w.WriteHeader(http.StatusOK)
+		resBody.Message = result.Message
 	}
+
 	resBodyBytes, _ := json.Marshal(resBody)
-	w.WriteHeader(http.StatusOK)
 	w.Write(resBodyBytes)
 }

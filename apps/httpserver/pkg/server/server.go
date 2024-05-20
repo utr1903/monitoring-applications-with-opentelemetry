@@ -102,12 +102,9 @@ func (s *server) StoreTask(w http.ResponseWriter, r *http.Request) {
 	result, err := s.storeService.Store(ctx, &services.StoreRequest{
 		Task: reqBody.Message,
 	})
-	if err != nil {
-		return
-	}
 
 	// Write response
-	s.writeStoreResponse(result, w)
+	s.writeStoreResponse(result, w, err != nil)
 }
 
 func (s *server) ListTasks(w http.ResponseWriter, r *http.Request) {
@@ -126,12 +123,9 @@ func (s *server) ListTasks(w http.ResponseWriter, r *http.Request) {
 	result, err := s.listService.List(ctx, &services.ListRequest{
 		Limit: *queryLimit,
 	})
-	if err != nil {
-		return
-	}
 
 	// Write response
-	s.writeListResponse(result, w)
+	s.writeListResponse(result, w, err != nil)
 }
 
 func (s *server) DeleteTasks(w http.ResponseWriter, r *http.Request) {
@@ -142,10 +136,7 @@ func (s *server) DeleteTasks(w http.ResponseWriter, r *http.Request) {
 
 	// Delete tasks
 	result, err := s.deleteService.Delete(ctx, &services.DeleteRequest{})
-	if err != nil {
-		return
-	}
 
 	// Write response
-	s.writeDeleteResponse(result, w)
+	s.writeDeleteResponse(result, w, err != nil)
 }
