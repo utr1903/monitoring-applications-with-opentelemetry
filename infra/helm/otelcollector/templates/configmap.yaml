@@ -138,6 +138,12 @@ data:
           - sources:
             - from: connection
 
+      resource:
+        attributes:
+          - key: k8s.cluster.name
+            value: kind-otel
+            action: upsert
+
       batch: {}
 
     exporters:
@@ -176,6 +182,7 @@ data:
           processors:
             - memory_limiter
             - k8sattributes
+            - resource
             - batch
           exporters:
             # - debug
@@ -188,6 +195,7 @@ data:
           processors:
             - memory_limiter
             - k8sattributes
+            - resource
             - batch
           exporters:
             # - debug
@@ -199,6 +207,7 @@ data:
             - filelog
           processors:
             - memory_limiter
+            - resource
             - batch
           exporters:
             # - debug
