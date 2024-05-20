@@ -5,6 +5,19 @@ replicas: 1
 
 # Tempo config
 tempo:
+  # Metric generato
   metricsGenerator:
+    # Flag to enable
     enabled: true
+    # Remote write URL of Prometheus server
     remoteWriteUrl: "http://prometheus-server-headless.default.svc.cluster.local:80/api/v1/write"
+    # # Span -> Metric processor
+    # processor:
+    #   # Enable metric generation for service graph
+    #   service_graphs:
+    #     # Duration to wait for an edge to be completed
+    #     wait: 5s
+    overrides:
+      defaults:
+        metrics_generator:
+          processors: [service-graphs, span-metrics, local-blocks] # enables metrics generator
