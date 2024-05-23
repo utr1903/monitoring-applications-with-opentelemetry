@@ -107,3 +107,4 @@ Both `httpclient` and `grpcclient` have the flag `config.createPostprocessingDel
 ### Observability backends
 
 - [OSS](monitoring/oss/README.md) (Prometheus, Tempo, Loki, Grafana)
+- [New Relic](monitoring/newrelic/README.md)

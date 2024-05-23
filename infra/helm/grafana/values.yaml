@@ -1481,7 +1481,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1581,7 +1582,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1681,7 +1683,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1781,7 +1784,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1881,7 +1885,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -1981,7 +1986,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2081,7 +2087,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2181,7 +2188,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2281,7 +2289,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2381,7 +2390,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2481,7 +2491,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2581,7 +2592,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2694,7 +2706,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2794,7 +2807,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2894,7 +2908,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -2994,7 +3009,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3094,7 +3110,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3194,7 +3211,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3294,7 +3312,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3394,7 +3413,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3494,7 +3514,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3594,7 +3615,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3603,32 +3625,7 @@ dashboards:
                     ]
                   }
                 },
-                "overrides": [
-                  {
-                    "__systemRef": "hideSeriesFrom",
-                    "matcher": {
-                      "id": "byNames",
-                      "options": {
-                        "mode": "exclude",
-                        "names": [
-                          "grpcserver-77f989b8c-m49ps"
-                        ],
-                        "prefix": "All except:",
-                        "readOnly": true
-                      }
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.hideFrom",
-                        "value": {
-                          "legend": false,
-                          "tooltip": false,
-                          "viz": true
-                        }
-                      }
-                    ]
-                  }
-                ]
+                "overrides": []
               },
               "gridPos": {
                 "h": 8,
@@ -3636,7 +3633,7 @@ dashboards:
                 "x": 6,
                 "y": 69
               },
-              "id": 27,
+              "id": 51,
               "options": {
                 "legend": {
                   "calcs": [],
@@ -3719,7 +3716,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3819,7 +3817,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3944,7 +3943,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4044,7 +4044,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4144,7 +4145,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4244,7 +4246,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4305,7 +4308,7 @@ dashboards:
               {
                 "allValue": ".*",
                 "current": {
-                  "selected": true,
+                  "selected": false,
                   "text": [
                     "All"
                   ],
@@ -4456,7 +4459,7 @@ dashboards:
                 "uid": "loki"
               },
               "gridPos": {
-                "h": 10,
+                "h": 14,
                 "w": 24,
                 "x": 0,
                 "y": 10
@@ -4480,7 +4483,7 @@ dashboards:
                     "uid": "loki"
                   },
                   "editorMode": "code",
-                  "expr": "{service_name=~\"$services\"} | k8s_node_name=~\"$nodes\"",
+                  "expr": "{service_name=~\"$services\"} | k8s_node_name=~\"$nodes\" | level=~\"error|warning\"",
                   "queryType": "range",
                   "refId": "A"
                 }
@@ -4613,7 +4616,7 @@ dashboards:
             ]
           },
           "time": {
-            "from": "now-5m",
+            "from": "now-15m",
             "to": "now"
           },
           "timepicker": {},
