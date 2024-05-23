@@ -58,7 +58,7 @@ Let's mock as if the `grpcserver` application cannot reach to the database. To d
 createDbNotReachableError: true
 ```
 
-Now, we re-run the [deploy.sh](/infra/helm/deploy.sh) script for the `grpcserver` and wait for the application to be re-deployed.
+Now, we re-run the [`deploy.sh`](/infra/helm/deploy.sh) script for the `grpcserver` and wait for the application to be re-deployed.
 
 Checking out our Performance dashboard, we can notice that the Error Rate widgets for the `grpcclient` and `grpcserver` are now being populated, indicating that there are errors.
 
@@ -90,7 +90,7 @@ Now, we cause another issue! You can reset `grpcserver` btw. This time it'll be 
 createPostprocessingError: true
 ```
 
-Now, we re-run the [deploy.sh](/infra/helm/deploy.sh) script for the `httpclient` and wait for the application to be re-deployed.
+Now, we re-run the [`deploy.sh`](/infra/helm/deploy.sh) script for the `httpclient` and wait for the application to be re-deployed.
 
 Checking out our Performance dashboard, we can notice that the Error Rate widget regarding spans for the `httpclient` is now getting populated, though the HTTP ones don't.
 
