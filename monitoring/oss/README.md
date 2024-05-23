@@ -27,7 +27,7 @@ The Performance dashboard gives you an overview of how all of your applications 
 
 #### Throughput
 
-![Throughout](/media/grafana_dashboard_performance_throughput.png)
+![Throughput](/media/grafana_dashboard_performance_throughput.png)
 
 #### Latency
 
@@ -62,7 +62,7 @@ Now, we re-run the [`deploy.sh`](/infra/helm/deploy.sh) script for the `grpcserv
 
 Checking out our Performance dashboard, we can notice that the Error Rate widgets for the `grpcclient` and `grpcserver` are now being populated, indicating that there are errors.
 
-![Latency](/media/grafana_dashboard_performance_error_rate_rpc.png)
+![Performance DB not reachable](/media/grafana_dashboard_performance_error_rate_rpc.png)
 
 Apparently, there is a problem with our GPRC applications and in matter of fact, all of the methods are failing. If we check the individual spans with errors, we see that the DB calls are all failing. It's a good start to check the spans that belong to DB calls.
 
