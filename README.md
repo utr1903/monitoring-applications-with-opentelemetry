@@ -16,6 +16,8 @@ This repo is dedicated to show how to instrument applications with OpenTelemetry
 - kind
 - Helm 3
 - Go SDK 1.21 (optional)
+- New Relic (optional)
+- Terraform (optional)
 
 ## Architecture
 

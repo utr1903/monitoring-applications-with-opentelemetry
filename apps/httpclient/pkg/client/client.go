@@ -69,7 +69,7 @@ func (c *Client) postprocess(ctx context.Context, duration int) {
 	defer span.End()
 
 	if c.createPostprocessingError {
-		err := errors.New("could not find postprocessing schema")
+		err := errors.New("crashed due to singularity")
 		span.SetStatus(codes.Error, "Postprocessing failed.")
 		span.RecordError(err)
 
